@@ -1,4 +1,7 @@
-var sites = { "request": { "str": null, "timestamp": 1557505821, "loc": { "lat": "20.423250", "lng": "-86.924084" }, "mode": "sites", "dist": "25", "api": 1 }, 
+var sites_ = { "request": { 
+    "str": null, "timestamp": 1557505821, 
+    "loc": { "lat": "20.423250", "lng": "-86.924084" }, 
+    "mode": "sites", "dist": "25", "api": 1 }, 
 "sites": [
     { 
         "currents": null, 
@@ -18,26 +21,56 @@ var sites = { "request": { "str": null, "timestamp": 1557505821, "loc": { "lat":
 
 const data = 'something';
 
+var infoWindows = []
+
 var app = new Vue({
     el: '#page',
     data: {
-      message: data
+        activeSite: {
+            name: 'Cozumel',
+            location: ['Mexico'],
+            note: null
+        }
+    },
+    methods: {
+        updateSite: updateSite
     }
   })
 
 window.app = app;
 
+function save(sites) {
+    localStorage.setItem('sites', JSON.stringify(sites))
+}
+
+function loadSites() {
+    let sites = JSON.parse(localStorage.getItem('sites'))
+    if (sites == null) { sites = sites_.sites}
+    app.sites = sites
+    return sites
+}
+
+function showSite(siteName) {
+    const site = app.sites.find(s => s.name == siteName)
+    app.activeSite = site
+}
+
+function updateSite() {
+    app.sites = app.sites.map((s) => {
+        if (s.name == app.activeSite.name) {
+            return app.activeSite
+        }
+        return s
+    })
+    save(app.sites)
+}
+
 // Initialize and add the map
 function initMap() {
-    // The location of Uluru
     var cozumel = { lat: 20.423250, lng: -86.924084 };
-    var uluru = { lat: -25.344, lng: 131.036 };
-    // The map, centered at Uluru
     var map = new google.maps.Map(
         document.getElementById('map'), { zoom: 11, center: cozumel });
-    // The marker, positioned at Uluru
-
-    markers = sites.sites.map((site) => {
+        markers = loadSites().map((site) => {
         const position = {
             lat: Number(site.lat),
             lng: Number(site.lng)
@@ -50,12 +83,17 @@ function initMap() {
             icon
         });
 
-        var infowindow = new google.maps.InfoWindow({
+        const infowindow = new google.maps.InfoWindow({
             content: site.name
         });
 
+        infoWindows.push(infowindow)
+
         marker.addListener('click', function() {
+            infoWindows.forEach((window) => window.close())
+
             infowindow.open(map, marker);
+            showSite(marker.title)
         });
 
         return marker

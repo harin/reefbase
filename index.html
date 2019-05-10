@@ -53,9 +53,11 @@
                         <div class="column is-three-quarters"></div>
                         <div class="column">
                             <div class="tile box is-vertical" id="main-content">
-                                <h2 class="title is-two">Cozumel</h2>
-                                <h3 class="subtitle is-four">Mexico</h3>
-                                <textarea class="textarea" placeholder="Take notes here.">{{ message }}</textarea>
+                                <h2 class="title is-two">{{ activeSite.name }}</h2>
+                                <h3 class="subtitle is-four">{{ activeSite.location }}</h3>
+                                <textarea 
+                                    v-model="activeSite.note"
+                                    v-on:change="updateSite" class="textarea" placeholder="Take notes here."></textarea>
                             </div>
                         </div>
                     </div>
