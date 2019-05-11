@@ -8,8 +8,15 @@ db = SQLAlchemy()
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_envvar('REEFBASE_SETTINGS')
+    # app.config.from_envvar('REEFBASE_SETTINGS')
     db.init_app(app)
+
+    if os.environ['FLASK_ENV'] == 'production':
+        app.config.from_object('config.ProductionConfig')
+    else:
+        app.config.from_object('config.DevelopmentConfig')
+
+    print('appconfig', app.config)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
