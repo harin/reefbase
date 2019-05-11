@@ -11,12 +11,11 @@ def create_app(test_config=None):
     # app.config.from_envvar('REEFBASE_SETTINGS')
     db.init_app(app)
 
+    print('FLASK_ENV', os.environ['FLASK_ENV'])
     if os.environ['FLASK_ENV'] == 'production':
         app.config.from_object('config.ProductionConfig')
     else:
         app.config.from_object('config.DevelopmentConfig')
-
-    print('appconfig', app.config)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

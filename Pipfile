@@ -13,6 +13,7 @@ pytest = "*"
 coverage = "*"
 cryptography = "*"
 waitress = "*"
+pymysql = "*"
 
 [requires]
 python_version = "3.7"

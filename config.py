@@ -6,8 +6,8 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ['SQLALCHEMY_DATABASE_URI']
-    SECRET_KEY = os.environ['SECRET_KEY']
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 class DevelopmentConfig(Config):
     SECRET_KEY = 'dev'
