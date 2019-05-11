@@ -75,7 +75,7 @@ function initMap() {
             lat: Number(site.lat),
             lng: Number(site.lng)
         }
-        const icon = '/assets/diverflag.png'
+        const icon = '/static/img/diverflag.png'
         var marker = new google.maps.Marker({
             title: site.name,
             position, 

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% raw %}
+<header>
+<div id="map"></div>
+<div id="content">
+    <section class="section">
+        <div class="container is-fluid">
+            <div class="columns">
+                <div class="column is-three-quarters"></div>
+                <div class="column">
+                    <div class="tile box is-vertical" id="main-content">
+                        <h2 class="title is-two">{{ activeSite.name }}</h2>
+                        <h3 class="subtitle is-four">{{ activeSite.location }}</h3>
+                        <textarea 
+                            v-model="activeSite.note"
+                            v-on:change="updateSite" class="textarea" placeholder="Take notes here."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endraw %}
+{% endblock %}  
