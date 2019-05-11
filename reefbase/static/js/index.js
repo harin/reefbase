@@ -40,14 +40,15 @@ var app = new Vue({
 window.app = app;
 
 function save(sites) {
-    localStorage.setItem('sites', JSON.stringify(sites))
+    // localStorage.setItem('sites', JSON.stringify(sites))
 }
 
-function loadSites() {
-    let sites = JSON.parse(localStorage.getItem('sites'))
-    if (sites == null) { sites = sites_.sites}
-    app.sites = sites
-    return sites
+async function loadSites() {
+    const resp = await fetch('/api/sites')
+    const data = await resp.json()
+    app.sites = data
+    console.log('init map')
+    return data
 }
 
 function showSite(siteName) {
@@ -66,11 +67,12 @@ function updateSite() {
 }
 
 // Initialize and add the map
-function initMap() {
+async function initMap() {
     var cozumel = { lat: 20.423250, lng: -86.924084 };
     var map = new google.maps.Map(
         document.getElementById('map'), { zoom: 11, center: cozumel });
-        markers = loadSites().map((site) => {
+        const sites = await loadSites()
+        markers = sites.map((site) => {
         const position = {
             lat: Number(site.lat),
             lng: Number(site.lng)

@@ -9,7 +9,7 @@ from reefbase.db import db_session
 
 bp = Blueprint('site', __name__)
 
-@bp.route('/')
+@bp.route('/api/sites')
 def index():
     result = db_session.execute(
         """
