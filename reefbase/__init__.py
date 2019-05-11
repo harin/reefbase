@@ -9,7 +9,6 @@ if os.environ.get('FLASK_ENV') == 'production':
     engine_options['connect_args'] = {
         'ssl': { 'ca' : os.environ.get('RDS_CA_PATH') }
     }
-print('engine_options', engine_options)
 db = SQLAlchemy(engine_options=engine_options)
 
 def create_app(test_config=None):
