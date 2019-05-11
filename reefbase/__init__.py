@@ -3,7 +3,12 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
+
+engine_options = {}
+if os.environ.get('FLASK_ENV') == 'production':
+    engine_options['connect_args'] = os.environ.get('RDS_CA_PATH')
+
+db = SQLAlchemy(engine_options=engine_options)
 
 def create_app(test_config=None):
     # create and configure the app
