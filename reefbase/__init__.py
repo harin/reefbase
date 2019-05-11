@@ -6,7 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 engine_options = {}
 if os.environ.get('FLASK_ENV') == 'production':
-    engine_options['connect_args'] = os.environ.get('RDS_CA_PATH')
+    engine_options['connect_args'] = {
+        'ssl': { 'ca' : os.environ.get('RDS_CA_PATH') }
+    }
 
 db = SQLAlchemy(engine_options=engine_options)
 
