@@ -10,6 +10,9 @@
 
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script>
+        const user = {{ g.user_json | safe or 'null' }}
+    </script>
 </head>
 
 <body>
@@ -40,7 +43,7 @@
                         <li><span>{{ g.user['username'] }}</span>
                         <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
                       {% else %}
-                        <a id="login-button" class="button">
+                        <a id="login-button" class="button" href="/auth/login">
                             Login or Register
                         </a>
                       {% endif %}

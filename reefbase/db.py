@@ -5,6 +5,8 @@ from flask.cli import with_appcontext
 from flask import current_app
 import click 
 
+from reefbase import db
+
 # # default
 # engine = create_engine('mysql://scott:tiger@localhost/foo')
 
@@ -14,38 +16,35 @@ import click
 # # PyMySQL
 # engine = create_engine('mysql+pymysql://scott:tiger@localhost/foo')
 
+# engine = create_engine('mysql+pymysql://root:achtung@localhost:3306/test_reefbase', convert_unicode=True)
+# db_session = scoped_session(sessionmaker(autocommit=False,
+#                                          autoflush=False,
+#                                          bind=engine))
+
 # engine = create_engine(current_app.config['DATABASE'], convert_unicode=True)
-engine = create_engine('mysql+pymysql://root:achtung@localhost:3306/test_reefbase', convert_unicode=True)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
-# Base = declarative_base()
-# Base.query = db_session.query_property()
-
-# from sqlalchemy import Column, Integer, String
 def get_db():
-    return db_session
+    return db.session
 
-def close_db(e=None):
-    db_session.remove()
+# def close_db(e=None):
+#     db_session.remove()
 
-def init_db():
-    db = get_db()
+# def init_db():
+#     db = get_db()
 
     # with current_app.open_resource('schema.sql') as f:
     #     db.executescript(f.read().decode('utf8'))
 
-@click.command('init-db')
-@with_appcontext
-def init_db_command():
-    """Clear the existing data and create new tables."""
-    init_db()
-    click.echo('Initialized the database.')
+# @click.command('init-db')
+# @with_appcontext
+# def init_db_command():
+#     """Clear the existing data and create new tables."""
+#     init_db()
+#     click.echo('Initialized the database.')
 
 
-def init_app(app):
-    app.teardown_appcontext(close_db)
-    app.cli.add_command(init_db_command)
+# def init_app(app):
+#     app.teardown_appcontext(close_db)
+#     app.cli.add_command(init_db_command)
 
 # def init_db():
 #     # import all modules here that might define models so that

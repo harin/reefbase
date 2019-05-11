@@ -35,5 +35,6 @@ CREATE TABLE note (
   site_id INT NOT NULL,
   user_id INT NOT NULL,
   FOREIGN KEY (site_id) REFERENCES site (id),
-  FOREIGN KEY (user_id) REFERENCES user (id)
+  FOREIGN KEY (user_id) REFERENCES user (id),
+  UNIQUE(site_id, user_id)
 );
