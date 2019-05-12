@@ -68,37 +68,3 @@ function updateSite() {
 }
 
 // Initialize and add the map
-async function initMap() {
-    var cozumel = { lat: 20.423250, lng: -86.924084 };
-    var map = new google.maps.Map(
-        document.getElementById('map'), { zoom: 11, center: cozumel });
-        const sites = await loadSites()
-        markers = sites.map((site) => {
-        const position = {
-            lat: Number(site.lat),
-            lng: Number(site.lng)
-        }
-        const icon = '/static/img/diverflag.png'
-        var marker = new google.maps.Marker({
-            title: site.name,
-            position, 
-            map,
-            icon
-        });
-
-        const infowindow = new google.maps.InfoWindow({
-            content: site.name
-        });
-
-        infoWindows.push(infowindow)
-
-        marker.addListener('click', function() {
-            infoWindows.forEach((window) => window.close())
-
-            infowindow.open(map, marker);
-            showSite(marker.title)
-        });
-
-        return marker
-    })
-}

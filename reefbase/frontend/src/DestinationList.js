@@ -8,7 +8,7 @@ const Tile = (props) => <div className="tile is-child">{props.children}</div>
 
 const Dest = ({dest}) => (
         <Link className="box" 
-            to={`/sites/${dest.id}`} 
+            to={`/destinations/${dest.country}/${dest.name}`} 
             style={{margin: 10, height: 250, width: 250, background: '#102D54'}}
         > 
             <div className="title is-4"
@@ -21,7 +21,7 @@ const Level = (props) => <div className="level">{props.children}</div>
 
 function Destinations() {
     const dest = [
-        { id:1 ,name: 'Cozumel', country: 'Mexico' },
+        { id:1, name: 'Cozumel', country: 'Mexico' },
         { id:2, name: 'Koh Tao', country: 'Thailand' },
         { id:3, name: 'Rajah Ampat', country: 'Indonesia' }
     ]
