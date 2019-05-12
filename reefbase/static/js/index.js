@@ -34,7 +34,7 @@ async function saveSite(sites) {
 }
 
 async function loadSites() {
-    const resp = await fetch('/api/sites')
+    const resp = await fetch('/api/sites/')
     const data = await resp.json()
     app.sites = data
     console.log('init map')
