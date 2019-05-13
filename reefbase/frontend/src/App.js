@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Destination from './Destination'
 import DestinationList from './DestinationList'
 import sites from './divesites.js' 
+import getDestinations from './api'
 
 function DestinationPage(props) {
   return <Destination sites={sites} {...props}></Destination>

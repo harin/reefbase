@@ -3,7 +3,6 @@ import os
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
-
 engine_options = {}
 if os.environ.get('FLASK_ENV') == 'production':
     engine_options['connect_args'] = {
@@ -20,10 +19,11 @@ def create_app(test_config=None):
     db.init_app(app)
 
     print('FLASK_ENV', os.environ['FLASK_ENV'])
-    if os.environ['FLASK_ENV'] == 'production':
-        app.config.from_object('config.ProductionConfig')
-    else:
+    if os.environ.get('FLASK_ENV') == 'development':
         app.config.from_object('config.DevelopmentConfig')
+    else:
+        app.config.from_object('config.ProductionConfig')
+        
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -38,11 +38,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
 
     from . import auth
     app.register_blueprint(auth.bp)
@@ -50,12 +45,25 @@ def create_app(test_config=None):
     app.register_blueprint(sites.bp, url_prefix='/api/sites')
     from . import site_notes
     app.register_blueprint(site_notes.bp, url_prefix='/api/site-notes')
-    # app.add_url_rule('/', endpoint='index')
     
     @app.route('/')
     def index():
         return render_template('index.html')
 
+    @app.route('/ping')
+    def ping():
+        return 'pong'
+
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response
+
     print(app.url_map)
+
+
 
     return app
