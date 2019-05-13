@@ -14,6 +14,7 @@ coverage = "*"
 cryptography = "*"
 waitress = "*"
 pymysql = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.7"

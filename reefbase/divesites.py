@@ -9,40 +9,31 @@ from reefbase import db
 from reefbase.utils import to_dict
 db_session = db.session
 
-bp = Blueprint('sites', __name__)
+bp = Blueprint('divesite', __name__)
 
 @bp.route('/')
 def index():
     result_proxy = db_session.execute(
         """
         SELECT 
-            id,
-            name, 
-            location_id, 
+            divesite.id,
+            divesite.name, 
+            destination_id, 
             ST_Latitude(coord) as lat, 
-            ST_Longitude(coord) as lng
-        FROM site
+            ST_Longitude(coord) as lng,
+            destination.name as destination,
+            country.name as country
+        FROM divesite
+        JOIN destination ON divesite.destination_id = destination.id
+        JOIN country ON destination.country_id = country.id
         """
     ).fetchall()
-
-    location_ids = ','.join([ '"' + str(r[2]) + '"' for r in result_proxy])
-
-    location_names = db_session.execute(
-        f"""
-        SELECT id, name FROM location WHERE id in ({location_ids})
-        """
-    ).fetchall()
-
-
-    location_map = {}
-    for (lid, name) in location_names:
-        location_map[lid] = name
 
     sites = []  
     for row_proxy in result_proxy:
         d = to_dict(row_proxy)
-        d['location'] = location_map[d['location_id']]
         sites.append(d)
+        
     return jsonify(sites)
 
 @bp.route('/<int:site_id>/note/<int:user_id>')

@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from utils import render_query, execute, to_dicts
 
 engine_options = {}
 if os.environ.get('FLASK_ENV') == 'production':
@@ -21,6 +22,8 @@ def create_app(test_config=None):
     print('FLASK_ENV', os.environ['FLASK_ENV'])
     if os.environ.get('FLASK_ENV') == 'development':
         app.config.from_object('config.DevelopmentConfig')
+        from flask_cors import CORS
+        CORS(app)
     else:
         app.config.from_object('config.ProductionConfig')
         
@@ -41,8 +44,8 @@ def create_app(test_config=None):
 
     from . import auth
     app.register_blueprint(auth.bp)
-    from . import sites
-    app.register_blueprint(sites.bp, url_prefix='/api/sites')
+    from . import divesites
+    app.register_blueprint(divesites.bp, url_prefix='/api/divesites')
     from . import site_notes
     app.register_blueprint(site_notes.bp, url_prefix='/api/site-notes')
     
@@ -50,17 +53,55 @@ def create_app(test_config=None):
     def index():
         return render_template('index.html')
 
+    @app.route('/api/countries')
+    def countries():
+        return render_query(db.session,
+            """
+                SELECT id, name, ST_LATITUDE(coord) as lat, ST_LONGITUDE(coord) as lng, zoom_level FROM country
+            """
+        )
+
+    @app.route('/api/destinations')
+    def destinations():
+        return render_query(db.session, """
+                SELECT 
+                    d.id, 
+                    d.name, 
+                    ST_LATITUDE(d.coord) as lat, 
+                    ST_LONGITUDE(d.coord) as lng, 
+                    d.zoom_level,
+                    country.name as country
+                FROM destination as d
+                JOIN country ON d.country_id = country.id
+            """)
+
+    @app.route('/api/destinations/divesites/<country>/<dest_name>')
+    def destination_with_sites(country, dest_name):
+        dest = execute(db.session, f"SELECT id, name, ST_LATITUDE(coord) as lat, ST_LONGITUDE(coord) as lng, zoom_level  FROM destination WHERE name = '{dest_name}'")[0]
+        sites = db.session.execute("""
+            SELECT 
+                divesite.id,
+                divesite.name, 
+                destination_id, 
+                ST_Latitude(divesite.coord) as lat, 
+                ST_Longitude(divesite.coord) as lng,
+                destination.name as destination,
+                country.name as country
+            FROM destination 
+            JOIN divesite ON divesite.destination_id = destination.id
+            JOIN country ON destination.country_id = country.id
+            WHERE destination.name = :dest
+                AND country.name = :country
+            """, { 'dest': dest_name, 'country': country })
+        sites = to_dicts(sites)
+        dest['divesites'] = sites
+        return jsonify(dest)
+    
+
+
     @app.route('/ping')
     def ping():
         return 'pong'
-
-    @app.after_request
-    def after_request(response):
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
 
     print(app.url_map)
 

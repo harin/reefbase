@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
 import diveflag from './diverflag.png'
 import DestinationCard from './DestinationCard';
+import { getDiveSites, getDestination } from './api'
 
 const Flag = ({ site, clickHandler=()=>{} })=> {
 
@@ -21,28 +22,42 @@ const Flag = ({ site, clickHandler=()=>{} })=> {
 }
 
 function Destination(props) {
-    let { sites } = props
-    sites = sites.map((site) => {
-        site['country'] = props.match.params['country']
-        site['destinationName'] = props.match.params['name']
-        return site
-    })
-    const site = sites[0]
+    const [sites, setSites] = useState([])
+    const [destination, setDestination] = useState(null)
+    const [activeSite, setActiveSite] = useState({})
 
-    const [activeSite, setActiveSite] = useState(site)
+    useEffect(() => {
+        (async function() {
+            console.log(props)
+            const result = await getDestination(props.match.params.country, props.match.params.name)
+            console.log(result)
+            setDestination(result)
+            setSites(result.divesites)
+            if (result.divesites.length > 0) setActiveSite(result.divesites[0])
+        })()
+    }, [])
 
+    console.log({ destination })
     return (
         <div>
            <div style={{ height: '100vh', width: '100%', position: 'fixed', top: 0 }}>
+           {destination != null ?
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyCaxeoUHkl2GK3sKFaNvLfoRWMTm0EbzK0' }}
-                    defaultCenter={[site.lat, site.lng]}
-                    defaultZoom={11}
+                    defaultCenter={[destination.lat, destination.lng]}
+                    defaultZoom={destination.zoom_level}
                 >
                 {
-                    sites.map(site => <Flag lat={site.lat} lng={site.lng} site={site} clickHandler={() => {setActiveSite(site)}}/>)
+                    sites.map(site => <Flag 
+                        key={site.id} 
+                        lat={site.lat} 
+                        lng={site.lng} 
+                        site={site} 
+                        clickHandler={() => {setActiveSite(site)}}/>
+                    )
                 }
                 </GoogleMapReact>
+           :false}
             </div>
             <div id="content">
 

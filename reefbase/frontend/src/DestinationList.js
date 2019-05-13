@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom'
+import { getDestinations } from './api'
 // const Tile = (props) => <div className="tile is-child">{props.children}</div>
 
 const Dest = ({dest}) => (
@@ -17,11 +18,16 @@ const Dest = ({dest}) => (
 const Level = (props) => <div className="level">{props.children}</div>
 
 function Destinations() {
-    const dest = [
-        { id:1, name: 'Cozumel', country: 'Mexico' },
-        { id:2, name: 'Koh Tao', country: 'Thailand' },
-        { id:3, name: 'Rajah Ampat', country: 'Indonesia' }
-    ]
+    
+    const [isLoading, setIsLoading] = useState(true)
+    const [destinations, setDestinations] = useState([])
+    useEffect(() => {
+        (async function() {
+            const destinations = await getDestinations()
+            setDestinations(destinations)
+            setIsLoading(false)
+        })()
+    }, [])
 
     return (
         <div className="section">
@@ -30,8 +36,13 @@ function Destinations() {
                  <h1 className='title is-3' style={{paddingLeft: 23}}>Destinations</h1>
              </Level>
              <Level>
+                 { isLoading ? 
+                <div className="box is-loading" style={{background: '#102D54'}}>
+                    Loading
+                </div>
+                 : null}
                 <div className="tile is-parent">
-                    { dest.map(dest => <Dest dest={dest} />)}
+                    { destinations.map(dest => <Dest dest={dest} key={dest.id}/>)}
                 </div>
              </Level>
         </div></div>
