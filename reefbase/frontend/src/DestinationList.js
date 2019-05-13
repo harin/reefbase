@@ -1,21 +1,18 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './Navbar'
-import SimpleMap from './Map'
 import { Link } from 'react-router-dom'
-const Tile = (props) => <div className="tile is-child">{props.children}</div>
+// const Tile = (props) => <div className="tile is-child">{props.children}</div>
 
 const Dest = ({dest}) => (
-        <Link className="box" 
-            to={`/destinations/${dest.country}/${dest.name}`} 
-            style={{margin: 10, height: 250, width: 250, background: '#102D54'}}
-        > 
-            <div className="title is-4"
-            style={{color:'white', height: '100%', verticalAlign:'center'}}>
-                {dest.name}
-            </div>
-        </Link>
+    <Link className="box" 
+        to={`/destinations/${dest.country}/${dest.name}`} 
+        style={{margin: 10, height: 250, width: 250, background: '#102D54'}}
+    > 
+        <div className="title is-4"
+        style={{color:'white', height: '100%', verticalAlign:'center'}}>
+            {dest.name}
+        </div>
+    </Link>
 )
 const Level = (props) => <div className="level">{props.children}</div>
 

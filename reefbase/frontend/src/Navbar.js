@@ -1,6 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import { Link } from "react-router-dom";
 
 function Navbar() {
@@ -12,7 +10,7 @@ function Navbar() {
         style={{ paddingLeft:10, paddingRight:10}}
         >
     <div className="navbar-brand">
-        <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false"
+        <a href="#" role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false"
             data-target="navbarBasicExample">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>

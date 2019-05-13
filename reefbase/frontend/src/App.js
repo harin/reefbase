@@ -1,24 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import './index.css';
 import Navbar from './Navbar'
-
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import 'bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.min.css'
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Destination from './Destination'
 import DestinationList from './DestinationList'
 import sites from './divesites.js' 
 
 function DestinationPage(props) {
-  return <Destination sites={sites}></Destination>
+  return <Destination sites={sites} {...props}></Destination>
 }
 
 function About() {
   return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }
 
 function AppRouter() {
