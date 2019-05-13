@@ -7,16 +7,16 @@ db_session = db.session
 
 with app.app_context():
     db_session.execute(
-        'INSERT INTO country (id, name) VALUES (1, "Mexico")'
+        'INSERT INTO country (id, name, coord, zoom_level) VALUES (1, "Mexico", ST_GeomFromText(\'POINT(23.3142857 -111.6402526)\', 4326), 5)'
     )
     db_session.execute(
-        'INSERT INTO country (id, name) VALUES (2, "Thailand")'
+        'INSERT INTO country (id, name, coord, zoom_level) VALUES (2, "Thailand", ST_GeomFromText(\'POINT(13.0110666 96.9946093)\', 4326), 6)'
     )
     db_session.execute(
-        f'INSERT INTO destination (id, name, country_id) VALUES (1, "Cozumel", 1)'
+        f'INSERT INTO destination (id, name, coord, country_id) VALUES (1, "Cozumel", ST_GeomFromText(\'POINT(20.4323493 -87.0143379)\', 4326),  1)'
     )
     db_session.execute(
-        f'INSERT INTO destination (id, name, country_id) VALUES (2, "Koh Tao", 2)'
+        f'INSERT INTO destination (id, name, coord, country_id) VALUES (2, "Koh Tao",ST_GeomFromText(\'POINT(10.0923203 99.8178946)\', 4326), 2)'
     )
     db_session.commit()
 
