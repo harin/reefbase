@@ -3,8 +3,13 @@
 
 async function loadJson(path, options) {
     const resp = await fetch(path, options)
-    const data = await resp.json()
-    return data 
+    if (resp.ok) {
+      const data = await resp.json()
+      return data 
+    }
+    const error = new Error(resp.statusText)
+    error.response = resp
+    throw error
 }
 
 export async function getDestinations(query) {
@@ -26,8 +31,7 @@ export const auth = {
             body: JSON.stringify({ username, email, password }),
             headers: { 'Content-Type': 'application/json' }
         }
-        const resp = await fetch('/auth/api-register', options)
-        const data = await resp.json()
+        const data = await loadJson('/auth/api-register', options)
         return this.login(email, password)        
     },
     async login(email, password) {
@@ -36,12 +40,7 @@ export const auth = {
         body: JSON.stringify({ email, password }),
         headers: { 'Content-Type': 'application/json' }
       }
-      const resp = await fetch('/auth/api-login', options)
-      const data = await resp.json()
-      if (resp.status >= 400) {
-        if (data != null) throw Error(data.msg)
-        throw Error('Unknown Error has occured.')
-      }
+      const data = await loadJson('/auth/api-login', options)
       return data
     },
     async logout(cb) {
@@ -52,7 +51,6 @@ export const auth = {
           'Authorization': `Bearer ${this.accessToken}`
         }
       }
-      const resp = await fetch('/auth/api-logout', options)
-      const data = await resp.json() 
+      const data = await loadJson('/auth/api-logout', options)
     }
   };
