@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "57397db2b05ff082a61ad4b26b2d0901d5b161e16183f9933f26e19b2c7f8193"
+            "sha256": "b6ca2e4d795bb8c5ea8cf24b3b689215e32248ee7521a4c8efa37cc0afd021cd"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -162,6 +162,13 @@
             "index": "pypi",
             "version": "==3.0.7"
         },
+        "flask-jwt-extended": {
+            "hashes": [
+                "sha256:69d683b51cc85f3a0beb187787e8456a1cfe60e3f8d9da00dc0d7c34e38b698a"
+            ],
+            "index": "pypi",
+            "version": "==3.18.2"
+        },
         "flask-sqlalchemy": {
             "hashes": [
                 "sha256:0c9609b0d72871c540a7945ea559c8fdf5455192d2db67219509aed680a3d45a",
@@ -250,6 +257,13 @@
                 "sha256:a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3"
             ],
             "version": "==2.19"
+        },
+        "pyjwt": {
+            "hashes": [
+                "sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e",
+                "sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"
+            ],
+            "version": "==1.7.1"
         },
         "pymysql": {
             "hashes": [

@@ -1,14 +1,16 @@
 import functools
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for,
+    jsonify
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from reefbase import db
 from reefbase.utils import to_dict
 import json
-
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
+from webtoken import blacklist
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -65,7 +67,72 @@ def login():
         flash(error)
 
     return render_template('auth/login.html')
-    
+
+@bp.route('/api-register', methods=['POST'])
+def api_register():
+    username = request.json.get('username')
+    password = request.json.get('password')
+    email = request.json.get('email')
+    error = None
+
+    if not username:
+        error = 'Username is required.'
+    elif not password:
+        error = 'Password is required.'
+    elif not email:
+        error = 'Email is required'
+    elif db.session.execute(
+        'SELECT * FROM user WHERE username = :username OR email = :email', { 'username': username, 'email': email },
+    ).fetchone() is not None:
+        error = 'Username or email is already registered.'
+
+    if error is None:
+        db.session.execute(
+            'INSERT INTO user (username, password, email) VALUES (:username, :password_hash, :email)',
+            {'username':username, 'password_hash':generate_password_hash(password), 'email': email }
+        )
+        db.session.commit()
+        return jsonify({ 'msg': 'success'})
+
+    return jsonify({'error':error}) 
+
+@bp.route('/api-login', methods=['POST'])
+def api_login():
+    if not request.is_json:
+        return jsonify({"msg": "Missing JSON in request"}), 400
+
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+
+    if not username:
+        return jsonify({"msg": "Missing username parameter"}), 400
+    if not password:
+        return jsonify({"msg": "Missing password parameter"}), 400
+
+    error = None
+    user = db.session.execute(
+        'SELECT * FROM user WHERE username = :username', { 'username': username },
+    ).fetchone()
+
+    if user is None:
+        return jsonify({"msg": "Bad username or password"}), 401
+    elif not check_password_hash(user['password'], password):
+        return jsonify({"msg": "Bad username or password"}), 401
+
+    if error is None:
+        access_token = create_access_token(identity=username)
+        return jsonify(access_token=access_token), 200
+
+
+    return jsonify({"msg": "Bad username or password"}), 401
+
+@bp.route('/api-logout', methods=['POST'])
+@jwt_required
+def api_logout():
+    jti = get_raw_jwt()['jti']
+    blacklist.add(jti)
+    return jsonify({ 'msg': 'Successfully logged out' }), 200
 
 @bp.before_app_request
 def load_logged_in_user():

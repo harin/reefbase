@@ -38,7 +38,7 @@ class DestinationCard extends React.Component {
         return (
         <div>
             <h2 className="title is-two">{site.name}</h2>
-            <h3 className="subtitle is-four">{site.destinationName}, {site.country}</h3>
+            <h3 className="subtitle is-four">{site.destination}, {site.country}</h3>
             { textarea }
 
         </div>

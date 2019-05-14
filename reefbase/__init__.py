@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from utils import render_query, execute, to_dicts
+from webtoken import init_jwt
 
 engine_options = {}
 if os.environ.get('FLASK_ENV') == 'production':
@@ -11,15 +12,16 @@ if os.environ.get('FLASK_ENV') == 'production':
     }
 
 print('engine options', engine_options)
+print('FLASK_ENV', os.environ['FLASK_ENV'])
+
 db = SQLAlchemy(engine_options=engine_options)
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    # app.config.from_envvar('REEFBASE_SETTINGS')
     db.init_app(app)
+    init_jwt(app)
 
-    print('FLASK_ENV', os.environ['FLASK_ENV'])
     if os.environ.get('FLASK_ENV') == 'development':
         app.config.from_object('config.DevelopmentConfig')
         from flask_cors import CORS
