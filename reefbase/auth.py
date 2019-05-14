@@ -70,9 +70,10 @@ def login():
 
 @bp.route('/api-register', methods=['POST'])
 def api_register():
-    username = request.json.get('username')
-    password = request.json.get('password')
-    email = request.json.get('email')
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    email = data.get('email')
     error = None
 
     if not username:
@@ -94,38 +95,38 @@ def api_register():
         db.session.commit()
         return jsonify({ 'msg': 'success'})
 
-    return jsonify({'error':error}) 
+    return jsonify({'error': error}) 
 
 @bp.route('/api-login', methods=['POST'])
 def api_login():
     if not request.is_json:
         return jsonify({"msg": "Missing JSON in request"}), 400
-
     data = request.get_json()
-    username = data['username']
-    password = data['password']
+    email = data.get('email')
+    password = data.get('password')
 
-    if not username:
-        return jsonify({"msg": "Missing username parameter"}), 400
+    if not email:
+        return jsonify({"msg": "Missing email parameter"}), 400
     if not password:
         return jsonify({"msg": "Missing password parameter"}), 400
 
     error = None
     user = db.session.execute(
-        'SELECT * FROM user WHERE username = :username', { 'username': username },
+        'SELECT * FROM user WHERE email = :email', { 'email': email },
     ).fetchone()
 
     if user is None:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Bad email or password"}), 401
     elif not check_password_hash(user['password'], password):
-        return jsonify({"msg": "Bad username or password"}), 401
+        return jsonify({"msg": "Bad email or password"}), 401
 
     if error is None:
-        access_token = create_access_token(identity=username)
-        return jsonify(access_token=access_token), 200
+        user = to_dict(user)
+        access_token = create_access_token(identity=email)
+        return jsonify(access_token=access_token, username=user['username']), 200
 
 
-    return jsonify({"msg": "Bad username or password"}), 401
+    return jsonify({"msg": "Bad email or password"}), 401
 
 @bp.route('/api-logout', methods=['POST'])
 @jwt_required

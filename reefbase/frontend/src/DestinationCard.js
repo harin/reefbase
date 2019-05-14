@@ -1,6 +1,9 @@
 import React from 'react';
+import { auth } from './api'
+import { AppContext } from './AppContext'
 
 class DestinationCard extends React.Component {
+    static contextType = AppContext
     render() {
         const {site, note = {}, updateNoteHandler, isLoggedIn} = this.props
         if (site == null) {
@@ -12,7 +15,7 @@ class DestinationCard extends React.Component {
         }
 
         let textarea
-        if (isLoggedIn === true) {
+        if (this.context.user != null) {
             textarea = (
                 <div className='full-height'>
                     <textarea 
@@ -22,7 +25,6 @@ class DestinationCard extends React.Component {
                         ref={ c => this._input = c}
                         value={note.content}
                     >
-
                     </textarea>
                     <button className='button' onClick={updateNoteHandler}>submit</button>
                 </div>

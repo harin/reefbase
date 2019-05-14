@@ -1,35 +1,77 @@
-import React from 'react';
-// import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
 import './index.css';
 import Navbar from './Navbar'
 import 'bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.min.css'
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Destination from './Destination'
 import DestinationList from './DestinationList'
-import sites from './divesites.js' 
-import getDestinations from './api'
+import Login from './Login'
+import { AppContext, DEFAULT_STATE } from './AppContext'
+import { getDestinations, auth } from './api'
 
 function DestinationPage(props) {
-  return <Destination sites={sites} {...props}></Destination>
+  return <Destination {...props}></Destination>
 }
 
 function About() {
   return <h2>About</h2>;
 }
 
-function AppRouter() {
+function PrivateRoute({ component: Component, ...rest }) {
   return (
-    <Router>
-      <div>
-        <Navbar />
-        <Route path="/about/" component={About} />
-        <Route path="/destinations/" exact component={DestinationList} />
-        <Route path="/destinations/:country/:name" component={DestinationPage} />
-      </div>
-    </Router>
+    <Route
+      {...rest}
+      render={props =>
+        auth.isAuthenticated() ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
   );
 }
 
-export default AppRouter;
+class App extends React.Component{
+  state = DEFAULT_STATE
+  constructor(props) {
+    super(props)
+    let user = localStorage.getItem('user')
+    if (user != null) {
+      this.state.user = JSON.parse(user)
+    }
+  }
+
+  updateUser = (user) => {
+    this.setState({ user })
+    localStorage.setItem('user', JSON.stringify(user))
+  }
+
+  render() {
+    return (
+      <AppContext.Provider value={{
+          ...this.state, 
+          updateUser: this.updateUser
+      }}>
+        <Router>
+          <div>
+            <Navbar />
+            <Route path="/login/" component={Login} />
+            <Route path="/about/" component={About} />
+            <Route path="/destinations/" exact component={DestinationList} />
+            <Route path="/destinations/:country/:name" component={DestinationPage} />
+          </div>
+        </Router>
+      </AppContext.Provider>
+    );
+  }
+}
+
+export default App;
 

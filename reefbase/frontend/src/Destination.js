@@ -28,9 +28,7 @@ function Destination(props) {
 
     useEffect(() => {
         (async function() {
-            console.log(props)
             const result = await getDestination(props.match.params.country, props.match.params.name)
-            console.log(result)
             setDestination(result)
             setSites(result.divesites)
             if (result.divesites.length > 0) setActiveSite(result.divesites[0])
