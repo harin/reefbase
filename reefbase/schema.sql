@@ -2,7 +2,7 @@ CREATE TABLE user (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(32) UNIQUE NOT NULL,
   email VARCHAR(320) UNIQUE NOT NULL,
-  role VARCHAIR(10) DEFAULT "user",
+  role VARCHAR(10) DEFAULT "user",
   password TINYTEXT NOT NULL
 );
 
@@ -15,7 +15,7 @@ CREATE TABLE country (
 
 CREATE TABLE destination (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(20) NOT NULL,
+  name VARCHAR(100) NOT NULL,
   country_id INT,
   coord POINT NOT NULL SRID 4326,
   zoom_level FLOAT(4) DEFAULT 11,
@@ -24,8 +24,8 @@ CREATE TABLE destination (
 
 CREATE TABLE divesite (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  name TINYTEXT NOT NULL,
-  destination_id INT,
+  name VARCHAR(100) NOT NULL,
+  destination_id INT NOT NULL,
   coord POINT NOT NULL SRID 4326,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP,
