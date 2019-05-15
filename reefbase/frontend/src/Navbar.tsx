@@ -22,7 +22,7 @@ class Navbar extends React.Component {
                 style={{ paddingLeft: 10, paddingRight: 10 }}
             >
                 <div className="navbar-brand">
-                    <a href="#" role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                    <a href="/" role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false"
                         data-target="navbarBasicExample">
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
@@ -31,7 +31,7 @@ class Navbar extends React.Component {
                 </div>
                 <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
-                        <a href="#" className="navbar-item">
+                        <a href="/" className="navbar-item">
                             <div className="title" style={{ paddingRight: 20 }}>Reefbase</div>
                         </a>
                         <Link className="navbar-item" to="/about">About</Link>
@@ -39,7 +39,7 @@ class Navbar extends React.Component {
                     </div>
                     {user != null ?
                         <div className="navbar-end">
-                            <a href="#" className="navbar-item">{user.username}</a>
+                            <a href="/" className="navbar-item">{user.username}</a>
                             <a className="navbar-item" onClick={this.logout}>Logout</a>
                         </div>
                         :

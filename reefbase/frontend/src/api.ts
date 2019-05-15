@@ -1,6 +1,4 @@
 
-// const HOST = process.env.NODE_ENV == 'development' ? 'http://localhost:5000' : ''
-
 export interface IUser {
   id: number;
   username: string;
@@ -46,7 +44,7 @@ async function loadJson(path: string, options?:any) {
   try {
     const errorData = await resp.json() 
     error = errorData.error
-  } catch (error) {
+  } catch (e) {
     error = resp.statusText
   }
   throw new Error(error)
@@ -76,7 +74,7 @@ export const Note = {
       headers, 
       body
     })
-    return 
+    return data
   },
   async getNote({ diveSiteId, user }: { diveSiteId: number, user: IUser }): Promise<string> {
     const headers = {
@@ -123,5 +121,6 @@ export const auth = {
       }
     }
     const data = await loadJson('/auth/api-logout', options)
+    return data
   }
 };

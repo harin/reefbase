@@ -35,12 +35,9 @@ function Destination(props: any) {
             const diveSites = result.divesites || []
             setSites(diveSites)
             if (diveSites.length > 0) setActiveSite(diveSites[0])
-
-            console.log(activeSite, diveSites)
         })()
-    }, [])
+    }, [props.match.params.country, props.match.params.name])
 
-    console.log({ destination })
     return (
         <div>
            <div style={{ height: '100vh', width: '100%', position: 'fixed', top: 0 }}>

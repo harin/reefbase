@@ -1,5 +1,5 @@
 import React from 'react';
-import { IDiveSite, INote, Note } from './api'
+import { IDiveSite, Note } from './api'
 import { AppContext } from './AppContext'
 
 interface IDestinationCardProps {
@@ -11,9 +11,7 @@ interface IDestinationCardProps {
 class DestinationCard extends React.Component<IDestinationCardProps, any> {
     static contextType = AppContext
     _textarea: any
-    constructor(props: any) {
-        super(props)
-    }
+
 
     async syncNote() {
         const diveSiteId = this.props.site.id
@@ -27,7 +25,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
     }
 
     async componentDidUpdate(prevProps: any) {
-        if (this.props.site.id != prevProps.site.id) {
+        if (this.props.site.id !== prevProps.site.id) {
             this._textarea.value = ''
             this.syncNote()
         }
@@ -35,7 +33,8 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
 
     async onNoteSave(event: any) {
         const diveSiteId = this.props.site.id
-        const result = await Note.updateNote({ 
+        // TODO: check result and feedback UI
+        await Note.updateNote({ 
             diveSiteId, 
             user: this.context.user,
             content: this._textarea.value
@@ -43,7 +42,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
     }
 
     render() {
-        const {site, isLoggedIn} = this.props
+        const {site} = this.props
         if (site == null) {
             return (
                 <div>

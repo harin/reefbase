@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './App.css';
 import './index.css';
 import Navbar from './Navbar'
@@ -8,7 +8,7 @@ import Destination from './Destination'
 import DestinationList from './DestinationList'
 import Login from './Login'
 import { AppContext, DEFAULT_STATE } from './AppContext'
-import { getDestinations, auth, IUser } from './api'
+import { IUser } from './api'
 
 function DestinationPage(props: any) {
   return <Destination {...props}></Destination>
