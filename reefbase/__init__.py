@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from utils import render_query, execute, to_dicts
-from webtoken import init_jwt
+from .webtoken import init_jwt
+from .utils import render_query, execute, to_dicts
 
 engine_options = {}
 if os.environ.get('FLASK_ENV') == 'production':

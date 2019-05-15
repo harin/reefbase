@@ -10,7 +10,7 @@ from reefbase import db
 from reefbase.utils import to_dict
 import json
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
-from webtoken import blacklist
+from .webtoken import blacklist
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
