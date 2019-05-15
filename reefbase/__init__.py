@@ -1,6 +1,5 @@
 import os
-
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from utils import render_query, execute, to_dicts
 from webtoken import init_jwt
@@ -18,7 +17,8 @@ db = SQLAlchemy(engine_options=engine_options)
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+    static_folder = "frontend/build"
+    app = Flask(__name__, instance_relative_config=True, static_folder='frontend/build/')
     db.init_app(app)
     init_jwt(app)
 
@@ -51,9 +51,16 @@ def create_app(test_config=None):
     from . import site_notes
     app.register_blueprint(site_notes.bp, url_prefix='/api/notes')
     
-    @app.route('/')
-    def index():
-        return render_template('index.html')
+# Serve React App
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve(path):
+        if path != "" and os.path.exists(app.static_folder + path):
+            print('serving', path)
+            return send_from_directory(app.static_folder, path)
+        else:
+            print('serving', 'index.html', app.static_folder + path)
+            return send_from_directory(app.static_folder, 'index.html')
 
     @app.route('/api/countries')
     def countries():
