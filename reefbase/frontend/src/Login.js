@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { auth } from './api'
+import { auth } from './api.ts'
 import { withRouter } from 'react-router-dom'
-import { AppContext } from './AppContext'
+import { AppContext } from './AppContext.tsx'
 
 const Login = (props) => {
     const [email, setEmail] = useState('')

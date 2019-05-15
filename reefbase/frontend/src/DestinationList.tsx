@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { Link } from 'react-router-dom'
-import { getDestinations } from './api'
+import { getDestinations, IDestination } from './api'
 // const Tile = (props) => <div className="tile is-child">{props.children}</div>
 
-const Dest = ({dest}) => (
+const Dest = ({dest} : {dest:any}) => (
     <Link className="box" 
         to={`/destinations/${dest.country}/${dest.name}`} 
         style={{margin: 10, height: 250, width: 250, background: '#102D54'}}
@@ -15,17 +15,21 @@ const Dest = ({dest}) => (
         </div>
     </Link>
 )
-const Level = (props) => <div className="level">{props.children}</div>
+const Level = (props:any) => <div className="level">{props.children}</div>
 
 function Destinations() {
     
     const [isLoading, setIsLoading] = useState(true)
-    const [destinations, setDestinations] = useState([])
+    const [destinations, setDestinations] = useState<IDestination[]>([])
     useEffect(() => {
         (async function() {
-            const destinations = await getDestinations()
-            setDestinations(destinations)
-            setIsLoading(false)
+            try {
+                const destinations = await getDestinations()
+                setDestinations(destinations)
+                setIsLoading(false)
+            } catch(error) {
+                alert(error)
+            }
         })()
     }, [])
 

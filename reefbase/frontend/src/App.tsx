@@ -8,7 +8,7 @@ import Destination from './Destination'
 import DestinationList from './DestinationList'
 import Login from './Login'
 import { AppContext, DEFAULT_STATE } from './AppContext'
-import { getDestinations, auth } from './api'
+import { getDestinations, auth, IUser } from './api'
 
 function DestinationPage(props: any) {
   return <Destination {...props}></Destination>
@@ -38,10 +38,6 @@ function About() {
 //   );
 // }
 
-interface User {
-  username: string;
-  access_token: string;
-}
 
 class App extends React.Component{
   state = DEFAULT_STATE
@@ -53,7 +49,7 @@ class App extends React.Component{
     }
   }
 
-  updateUser = (user: User) => {
+  updateUser = (user: IUser) => {
     this.setState({ user })
     localStorage.setItem('user', JSON.stringify(user))
   }
@@ -67,6 +63,10 @@ class App extends React.Component{
         <Router>
           <div>
             <Navbar />
+            <Route exact path="/" render={() => (
+                <Redirect to="/destinations"/>
+              )
+            }/>
             <Route path="/login/" component={Login} />
             <Route path="/about/" component={About} />
             <Route path="/destinations/" exact component={DestinationList} />

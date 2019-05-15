@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
 import diveflag from './diverflag.png'
 import DestinationCard from './DestinationCard';
-import { getDiveSites, getDestination } from './api'
+import {getDestination, IDiveSite, IDestination} from './api'
 
-const Flag = ({ site, clickHandler=()=>{} })=> {
+
+const Flag = ({ site, lat, lng, clickHandler=()=>{} }: { site:IDiveSite, lat:number, lng:number, clickHandler?: () => void})=> {
 
     return (
         <img 
@@ -21,17 +22,21 @@ const Flag = ({ site, clickHandler=()=>{} })=> {
     )
 }
 
-function Destination(props) {
-    const [sites, setSites] = useState([])
-    const [destination, setDestination] = useState(null)
-    const [activeSite, setActiveSite] = useState({})
+function Destination(props: any) {
+    const [sites, setSites] = useState<IDiveSite[]>([])
+    const [destination, setDestination] = useState<IDestination | null>(null)
+    const [activeSite, setActiveSite] = useState<any>(null)
 
     useEffect(() => {
         (async function() {
             const result = await getDestination(props.match.params.country, props.match.params.name)
             setDestination(result)
-            setSites(result.divesites)
-            if (result.divesites.length > 0) setActiveSite(result.divesites[0])
+            console.log('result', result)
+            const diveSites = result.divesites || []
+            setSites(diveSites)
+            if (diveSites.length > 0) setActiveSite(diveSites[0])
+
+            console.log(activeSite, diveSites)
         })()
     }, [])
 
@@ -42,7 +47,7 @@ function Destination(props) {
            {destination != null ?
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyCaxeoUHkl2GK3sKFaNvLfoRWMTm0EbzK0' }}
-                    defaultCenter={[destination.lat, destination.lng]}
+                    defaultCenter={destination}
                     defaultZoom={destination.zoom_level}
                 >
                 {
@@ -58,7 +63,8 @@ function Destination(props) {
            :false}
             </div>
             <div id="content">
-
+            
+            {activeSite != null ?
             <section className="section">
                 <div className="container is-fluid">
                     <div className="columns">
@@ -71,6 +77,7 @@ function Destination(props) {
                     </div>
                 </div>
             </section>
+            :null}
             </div>
         </div>
     );

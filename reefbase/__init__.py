@@ -49,7 +49,7 @@ def create_app(test_config=None):
     from . import divesites
     app.register_blueprint(divesites.bp, url_prefix='/api/divesites')
     from . import site_notes
-    app.register_blueprint(site_notes.bp, url_prefix='/api/site-notes')
+    app.register_blueprint(site_notes.bp, url_prefix='/api/notes')
     
     @app.route('/')
     def index():

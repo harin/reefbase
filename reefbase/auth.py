@@ -95,7 +95,7 @@ def api_register():
         db.session.commit()
         return jsonify({ 'msg': 'success'})
 
-    return jsonify({'error': error}) 
+    return jsonify({ 'error': error }), 400
 
 @bp.route('/api-login', methods=['POST'])
 def api_login():
@@ -122,8 +122,12 @@ def api_login():
 
     if error is None:
         user = to_dict(user)
-        access_token = create_access_token(identity=email)
-        return jsonify(access_token=access_token, username=user['username']), 200
+        access_token = create_access_token(identity=user)
+        return jsonify(
+            access_token=access_token, 
+            username=user['username'],
+            id=user['id']
+        ), 200
 
 
     return jsonify({"msg": "Bad email or password"}), 401

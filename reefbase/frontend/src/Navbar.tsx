@@ -7,7 +7,7 @@ class Navbar extends React.Component {
     static contextType = AppContext
 
     logout = async () => {
-        await auth.logout()
+        await auth.logout(this.context.user.access_token)
         this.context.updateUser(null)
     }
 
