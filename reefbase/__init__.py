@@ -51,16 +51,7 @@ def create_app(test_config=None):
     from . import site_notes
     app.register_blueprint(site_notes.bp, url_prefix='/api/notes')
     
-# Serve React App
-    @app.route('/', defaults={'path': ''})
-    @app.route('/<path:path>')
-    def serve(path):
-        if path != "" and os.path.exists(app.static_folder + path):
-            print('serving', path)
-            return send_from_directory(app.static_folder, path)
-        else:
-            print('serving', 'index.html', app.static_folder + path)
-            return send_from_directory(app.static_folder, 'index.html')
+
 
     @app.route('/api/countries')
     def countries():
@@ -72,7 +63,8 @@ def create_app(test_config=None):
 
     @app.route('/api/destinations')
     def destinations():
-        return render_query(db.session, """
+        limit = request.args.get('limit', None)
+        query =  """
                 SELECT 
                     d.id, 
                     d.name, 
@@ -82,7 +74,11 @@ def create_app(test_config=None):
                     country.name as country
                 FROM destination as d
                 JOIN country ON d.country_id = country.id
-            """)
+            """
+        if limit is not None:
+            query += '\n LIMIT ' + limit
+        
+        return render_query(db.session, query)
 
     @app.route('/api/destinations/divesites/<country>/<dest_name>')
     def destination_with_sites(country, dest_name):
@@ -115,5 +111,12 @@ def create_app(test_config=None):
     print(app.url_map)
 
 
+    @app.route('/', defaults={'path': ''})
+    @app.route('/<path:path>')
+    def serve(path):
+        if path != "" and os.path.exists(app.static_folder + path):
+            return send_from_directory(app.static_folder, path)
+        else:
+            return send_from_directory(app.static_folder, 'index.html')
 
     return app

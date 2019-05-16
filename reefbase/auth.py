@@ -9,7 +9,10 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from reefbase import db
 from reefbase.utils import to_dict
 import json
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token, verify_jwt_in_request,
+    get_jwt_identity, get_raw_jwt
+)
 from .webtoken import blacklist
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
@@ -138,6 +141,15 @@ def api_logout():
     jti = get_raw_jwt()['jti']
     blacklist.add(jti)
     return jsonify({ 'msg': 'Successfully logged out' }), 200
+
+@bp.route('/check-token', methods=['GET','POST'])
+def check_token():
+    print('hello')
+    try:
+        verify_jwt_in_request() # raise error if token invalid
+        return jsonify({ 'valid': True }), 200 
+    except:
+        return jsonify({ 'valid': False }), 200
 
 @bp.before_app_request
 def load_logged_in_user():

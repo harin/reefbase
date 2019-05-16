@@ -57,6 +57,7 @@ def get_update_or_create(divesite_id, user_id, methods=['POST', 'GET']):
     note = get_note_by_site_user(divesite_id, user_id)
 
     user = get_jwt_identity()
+    print(user, user_id)
     if user['id'] != user_id:
         return jsonify({ 'error': 'Unauthorized' }), 401
 
