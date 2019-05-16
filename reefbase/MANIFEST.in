@@ -1,4 +1,0 @@
-include reefbase/schema.sql
-graft reefbase/static
-graft reefbase/templates
-global-exclude *.pyc
