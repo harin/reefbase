@@ -39,7 +39,7 @@ class Command(BaseCommand):
             df_ = df[df.city == city]
             dest = Destination.objects.filter(name = city).first()
             for i, row in df_.iterrows():
-                d = DiveSite(name=row.name, lat=row.lat, lng=row.lng, destination=dest)
+                d = DiveSite(name=row['name'], lat=row.lat, lng=row.lng, destination=dest)
                 d.save()
 
     def handle(self, *args, **options):
