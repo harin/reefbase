@@ -14,6 +14,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
 
 
     async syncNote() {
+        if (this.context.user == null) return
         const diveSiteId = this.props.site.id
         const content = await Note.getNote({ diveSiteId, user: this.context.user })
         this._textarea.value = content
@@ -69,7 +70,12 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
         } else {
             textarea = (
                 <div>
-                    <textarea className="textarea" placeholder="Please login to take notes" disabled></textarea>
+                    <textarea 
+                        className="textarea" 
+                        placeholder="Please login to take notes" 
+                        disabled
+                        ref={c => this._textarea = c}
+                    ></textarea>
                 </div>
             )
         }
