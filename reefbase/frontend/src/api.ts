@@ -33,7 +33,14 @@ export interface IUser {
   username: string;
 }
 
-async function loadJson(path: string, options?:any) {
+async function loadJson(path: string, options:any = {}) {
+  
+  if (options.headers == null) {
+    options.headers = {}
+  }
+
+  options.headers['Content-Type'] = 'application/json'
+
   const resp = await fetch(path, options)
   if (resp.ok) {
     const data = await resp.json()
@@ -50,8 +57,17 @@ async function loadJson(path: string, options?:any) {
   throw new Error(error)
 }
 
-export async function getDestinations(query?:any): Promise<IDestination[]> {
-  return loadJson('/api/destinations')
+async function loadAuthJson(path:string , accessToken: string, options:any = {}) {
+  if (options.headers == null) {
+    options.headers = {}
+  }
+  options.headers['Authorization'] = `Bearer ${accessToken}` 
+  return loadJson(path, options)
+}
+
+export async function getDestinations(params:{ limit: string } = { limit: '10' }): Promise<IDestination[]> {
+  const paramsObj = new URLSearchParams(params)
+  return loadJson(`/api/destinations?${paramsObj.toString()}`)
 }
 
 export async function getDestination(country:string, destName:string): Promise<IDestination> {
@@ -122,5 +138,9 @@ export const auth = {
     }
     const data = await loadJson('/auth/api-logout', options)
     return data
+  },
+  async isTokenValid(accessToken: string): Promise<boolean> {
+    const { valid } = await loadAuthJson('/auth/check-token', accessToken)
+    return valid
   }
 };

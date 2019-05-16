@@ -1,21 +1,16 @@
 import React from 'react';
-import './App.css';
-import './index.css';
+import './App.scss';
 import Navbar from './Navbar'
-import 'bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.min.css'
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import Destination from './Destination'
 import DestinationList from './DestinationList'
 import Login from './Login'
+import About from './About'
 import { AppContext, DEFAULT_STATE } from './AppContext'
-import { IUser } from './api'
+import { IUser, auth } from './api'
 
 function DestinationPage(props: any) {
   return <Destination {...props}></Destination>
-}
-
-function About() {
-  return <h2>About</h2>;
 }
 
 // function PrivateRoute({ component: Component, ...rest }) {
@@ -45,11 +40,20 @@ class App extends React.Component{
     super(props)
     let user = localStorage.getItem('user')
     if (user != null) {
-      this.state.user = JSON.parse(user)
+      let tempUser = JSON.parse(user) || {}
+      if (tempUser.access_token != null) {
+        this.state.user = tempUser
+        auth.isTokenValid(tempUser.access_token)
+        .then((isValid) => {
+          if (isValid === false) {
+            this.updateUser(null)
+          }
+        })
+      }
     }
   }
 
-  updateUser = (user: IUser) => {
+  updateUser = (user: IUser|null) => {
     this.setState({ user })
     localStorage.setItem('user', JSON.stringify(user))
   }
