@@ -4,7 +4,6 @@ from notes.models import Note
 
 
 class NoteSerializer(serializers.HyperlinkedModelSerializer):
-    ref_type = serializers.Field()
     class Meta:
         model = Note
         fields = ('url', 'id', 'author', 'content', 
