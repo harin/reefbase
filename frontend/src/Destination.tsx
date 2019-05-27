@@ -68,7 +68,11 @@ function Destination(props: any) {
                         <div className="column is-three-quarters"></div>
                         <div className="column">
                             <div className="tile box is-vertical" id="main-content">
-                               <DestinationCard site={activeSite} isLoggedIn={true} />
+                               <DestinationCard 
+                                    country={props.match.params.country}
+                                    city={props.match.params.city}
+                                    site={activeSite} 
+                                    isLoggedIn={true} />
                             </div>
                         </div>
                     </div>

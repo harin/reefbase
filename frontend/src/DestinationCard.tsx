@@ -3,15 +3,16 @@ import { IDiveSite, Note } from './api'
 import { AppContext } from './AppContext'
 
 interface IDestinationCardProps {
-    site: IDiveSite,
+    site: IDiveSite;
     // updateNoteHandler: () => any,
-    isLoggedIn: boolean
+    isLoggedIn: boolean;
+    country: string;
+    city: string;
 }
 
 class DestinationCard extends React.Component<IDestinationCardProps, any> {
     static contextType = AppContext
     _textarea: any
-
 
     async syncNote() {
         const diveSiteId = this.props.site.id
@@ -21,13 +22,13 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
 
     async componentWillMount() {
         if (this.context.user == null) return
-        await this.syncNote()
+        // await this.syncNote()
     }
 
     async componentDidUpdate(prevProps: any) {
         if (this.props.site.id !== prevProps.site.id) {
             this._textarea.value = ''
-            this.syncNote()
+            // this.syncNote()
         }
     }
 
@@ -42,7 +43,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
     }
 
     render() {
-        const {site} = this.props
+        const {site, country, city} = this.props
         if (site == null) {
             return (
                 <div>
@@ -69,7 +70,11 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
         } else {
             textarea = (
                 <div>
-                    <textarea className="textarea" placeholder="Please login to take notes" disabled></textarea>
+                    <textarea 
+                        className="textarea" 
+                        placeholder="Please login to take notes" 
+                        ref={c => this._textarea = c}
+                        disabled></textarea>
                 </div>
             )
         }
@@ -77,7 +82,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
         return (
         <div>
             <h2 className="title is-two">{site.name}</h2>
-            <h3 className="subtitle is-four">{site.destination}, {site.country}</h3>
+            <h3 className="subtitle is-four">{city}, {country}</h3>
             { textarea }
 
         </div>
