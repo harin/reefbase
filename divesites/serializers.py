@@ -16,6 +16,8 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 
 class CountrySerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
+    num_divesite = serializers.IntegerField(required=False)
+    num_city = serializers.IntegerField(required=False)
     class Meta:
         model = Country
         fields = '__all__'
@@ -31,6 +33,7 @@ class DiveSiteSerializer(serializers.HyperlinkedModelSerializer):
 class CitySerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     divesite_set = DiveSiteSerializer(many=True, required=False)
+    num_divesite = serializers.IntegerField(required=False)
     class Meta:
         model = City
         fields = '__all__'

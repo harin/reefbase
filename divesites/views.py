@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
-# Create your views here.
 from django.contrib.auth.models import User, Group
+from django.db.models import Count
 from divesites.models import Country, City, DiveSite
 from rest_framework import viewsets
 from divesites.serializers import (
@@ -27,7 +27,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class CountryViewSet(viewsets.ModelViewSet):
-    queryset = Country.objects.all()
+    queryset = Country.objects.annotate(num_divesite=Count('city__divesite')).order_by('-num_divesite').all()
     serializer_class =  CountrySerializer
 
 
@@ -35,7 +35,7 @@ class CityViewSet(viewsets.ModelViewSet):
     serializer_class = CitySerializer
 
     def get_queryset(self):
-        queryset = City.objects.all()
+        queryset = City.objects.annotate(num_divesite=Count('divesite')).order_by('-num_divesite').all()
         country_name = self.request.query_params.get('country_name', None)
         if country_name is not None:
             country = Country.objects.get(name=country_name)
@@ -46,7 +46,7 @@ class CityViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(name=city_name)
 
         # TODO: only populate relationship when this is true
-        
+
         # include_divesites = self.request.query_params.get('include_divesites', None)
         # if include_divesites is not None:
         #     for city in queryset:

@@ -160,9 +160,9 @@ const LoginPage = (props) => {
                         <div className="column is-4 is-offset-4">
                             <Login {...props} context={context}/>
                         </div>
-                        <div className="column is-4 is-offset-4">
+                        {/* <div className="column is-4 is-offset-4">
                             <Register {...props} context={context} />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>}

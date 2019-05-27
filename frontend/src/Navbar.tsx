@@ -37,7 +37,7 @@ class Navbar extends React.Component {
                         <Link className="navbar-item" to="/about">About</Link>
                         <Link className="navbar-item" to="/destinations">Destinations</Link>
                     </div>
-                    {user != null ?
+                    {/* {user != null ?
                         <div className="navbar-end">
                             <a href="/" className="navbar-item">{user.username}</a>
                             <a className="navbar-item" onClick={this.logout}>Logout</a>
@@ -46,7 +46,7 @@ class Navbar extends React.Component {
                         <div className="navbar-end">
                             <Link className="navbar-item" to="/login">Login</Link>
                         </div>
-                    }
+                    } */}
                 </div>
             </nav>
         )

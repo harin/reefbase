@@ -72,7 +72,8 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
                 <div>
                     <textarea 
                         className="textarea" 
-                        placeholder="Please login to take notes" 
+                        placeholder="Notes coming soon!"
+                        // placeholder="Please login to take notes" 
                         ref={c => this._textarea = c}
                         disabled></textarea>
                 </div>

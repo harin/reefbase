@@ -58,7 +58,7 @@ const Countries = ({ dest }: { dest: any }) => (
     >
         <div className="title is-4"
             style={{ color: 'white', height: '100%', verticalAlign: 'center' }}>
-            {dest.name}
+            {dest.name} ({dest.num_divesite})
         </div>
     </Link>
 )
@@ -70,7 +70,7 @@ const Cities = ({ dest }: { dest: any }) => (
     >
         <div className="title is-4"
             style={{ color: 'white', height: '100%', verticalAlign: 'center' }}>
-            {dest.name}
+            {dest.name} ({dest.num_divesite})
         </div>
     </Link>
 )
