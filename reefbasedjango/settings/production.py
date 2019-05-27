@@ -10,6 +10,9 @@ ALLOWED_HOSTS = ['reefbase.herokuapp.com']
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+
+root_ca_path = BASE_DIR.parent/'amazon-rds-cs-cert.pem'
+print('root_ca_path', root_ca_path)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -17,6 +20,9 @@ DATABASES = {
         'HOST': os.environ['DATABASE_HOST'] ,
         'USER': os.environ['DATABASE_USER'],
         'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'OPTIONS': { 'sslmode': 'require' }
+        'OPTIONS': { 
+            'sslmode': 'require',
+            'sslrootcert': root_ca_path
+        }
     }
 }
