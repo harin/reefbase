@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from divesites.models import Country, Destination, DiveSite
+from divesites.models import Country, City, DiveSite
 import pandas as pd
 import json
 import os
@@ -16,7 +16,7 @@ class Command(BaseCommand):
         df.lat = df.lat.astype('float')
 
         Country.objects.all().delete()
-        Destination.objects.all().delete()
+        City.objects.all().delete()
         DiveSite.objects.all().delete()
 
         for i, row in df.groupby('country').mean().reset_index().iterrows():
@@ -28,7 +28,7 @@ class Command(BaseCommand):
             country = Country.objects.filter(name = country_name).first()
             df_city = df_.groupby('city').mean().reset_index()
             for i, row in df_city.iterrows():
-                d = Destination(
+                d = City(
                     name=row.city, 
                     lat=row.lat, 
                     lng=row.lng, 
@@ -37,9 +37,9 @@ class Command(BaseCommand):
 
         for city in df.city.unique():
             df_ = df[df.city == city]
-            dest = Destination.objects.filter(name = city).first()
+            dest = City.objects.filter(name = city).first()
             for i, row in df_.iterrows():
-                d = DiveSite(name=row['name'], lat=row.lat, lng=row.lng, destination=dest)
+                d = DiveSite(name=row['name'], lat=row.lat, lng=row.lng, city=dest)
                 d.save()
 
     def handle(self, *args, **options):

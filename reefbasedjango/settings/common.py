@@ -19,13 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!$ce-yc*v4y5^_e#xyzqs3)=di1e9*gq1mad#08nx8s$qcc+lb'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -61,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware' # for static in production
 ]
 
 ROOT_URLCONF = 'reefbasedjango.urls'
@@ -84,18 +78,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'reefbasedjango.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'reefbaseapp',
-        'HOST': 'localhost',
-        'USER': 'postgres',
-        'PASSWORD': 'password'
-    }
-}
 
 
 # Password validation
