@@ -5,7 +5,7 @@ DEBUG = False
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: update this when you have the production host
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+ALLOWED_HOSTS = ['reefbase.herokuapp.com']
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
