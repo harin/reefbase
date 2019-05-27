@@ -1,6 +1,6 @@
 from reefbasedjango.settings.common import *
 
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', False)
 
 SECRET_KEY = os.environ['SECRET_KEY']
 
@@ -16,6 +16,7 @@ DATABASES = {
         'NAME': os.environ['DATABASE_NAME'],
         'HOST': os.environ['DATABASE_HOST'] ,
         'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD']
+        'PASSWORD': os.environ['DATABASE_PASSWORD'],
+        'OPTIONS': { 'sslmode': 'require' }
     }
 }
