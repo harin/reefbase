@@ -36,7 +36,7 @@ function DestinationList(props: { locationType: string, country?: string }) {
                 alert(error)
             }
         })()
-    }, [])
+    }, [locationType, props.country])
 
     return (
         <DestinationList_ 
@@ -113,7 +113,7 @@ export const DestinationList_ = ({ breadcrumb, isLoading, destinations, location
                     {
                         breadcrumb.map((crumb, idx) =>
                             <li key={idx} className={idx === (breadcrumb.length - 1) ? 'is-active': ''}>
-                                <a href={crumb.href} className='title is-3' style={{ padding: '10px'}}>{ crumb.name }</a>
+                                <Link to={crumb.href} className='title is-3' style={{ padding: '10px'}}>{ crumb.name }</Link>
                             </li>
                         )
                     }

@@ -12,7 +12,7 @@ class Navbar extends React.Component {
     }
 
     render() {
-        const { user } = this.context
+        // const { user } = this.context
 
         return (
             <nav className="navbar is-dark"

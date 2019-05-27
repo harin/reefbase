@@ -36,7 +36,7 @@ function Destination(props: any) {
             setDiveSites(diveSites)
             if (diveSites.length > 0) setActiveSite(diveSites[0])
         })()
-    }, [props.match.params.country, props.match.params.name])
+    }, [props.match.params.country, props.match.params.city])
 
     return (
         <div>
