@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 router.register(r'users', divesites_views.UserViewSet)
 router.register(r'groups', divesites_views.GroupViewSet)
 router.register(r'countries', divesites_views.CountryViewSet)
-router.register(r'destinations', divesites_views.DestinationViewSet)
+router.register(r'cities', divesites_views.CityViewSet, basename='city')
 router.register(r'divesites', divesites_views.DiveSiteViewSet)
 router.register(r'notes', notes_views.NoteViewSet)
 

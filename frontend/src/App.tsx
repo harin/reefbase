@@ -13,26 +13,13 @@ function DestinationPage(props: any) {
   return <Destination {...props}></Destination>
 }
 
-// function PrivateRoute({ component: Component, ...rest }) {
-//   return (
-//     <Route
-//       {...rest}
-//       render={props =>
-//         auth.isAuthenticated() ? (
-//           <Component {...props} />
-//         ) : (
-//           <Redirect
-//             to={{
-//               pathname: "/login",
-//               state: { from: props.location }
-//             }}
-//           />
-//         )
-//       }
-//     />
-//   );
-// }
-
+function DestinationListPage(props: any) {
+  const pathname = props.location.pathname
+  if (pathname === '/destinations') {
+    return <DestinationList locationType='countries' />
+  }
+  return <DestinationList locationType='cities' country={props.match.params.country} />
+}
 
 class App extends React.Component{
   state = DEFAULT_STATE
@@ -73,8 +60,8 @@ class App extends React.Component{
             }/>
             <Route path="/login/" component={Login} />
             <Route path="/about/" component={About} />
-            <Route path="/destinations/" exact component={DestinationList} />
-            <Route path="/destinations/:country/:name" component={DestinationPage} />
+            <Route path="/destinations/" exact component={DestinationListPage} />
+            <Route path="/destinations/:country" component={DestinationListPage} />
           </div>
         </Router>
       </AppContext.Provider>

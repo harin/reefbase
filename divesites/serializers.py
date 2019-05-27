@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from divesites.models import Country, Destination, DiveSite
+from divesites.models import Country, City, DiveSite
 from rest_framework import serializers
 
 
@@ -20,10 +20,10 @@ class CountrySerializer(serializers.HyperlinkedModelSerializer):
         model = Country
         fields = '__all__'
 
-class DestinationSerializer(serializers.HyperlinkedModelSerializer):
+class CitySerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     class Meta:
-        model = Destination
+        model = City
         fields = '__all__'
 
 class DiveSiteSerializer(serializers.HyperlinkedModelSerializer):

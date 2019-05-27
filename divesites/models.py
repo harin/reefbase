@@ -34,7 +34,7 @@ class Country(Location):
 #   zoom_level FLOAT(4) DEFAULT 11,
 #   FOREIGN KEY (country_id) REFERENCES country (id)
 # );
-class Destination(Location):
+class City(Location):
     zoom_level = models.IntegerField(default=8)
     country = models.ForeignKey(Country, on_delete=models.CASCADE) 
 
@@ -51,7 +51,7 @@ class Destination(Location):
 
 class DiveSite(Location):
     zoom_level = models.IntegerField(default=11)
-    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
+    destination = models.ForeignKey(City, on_delete=models.CASCADE)
     
 
 # CREATE TABLE note (

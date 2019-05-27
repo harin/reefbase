@@ -1,5 +1,5 @@
 from django.test import TestCase
-from divesites.models import Country, Destination, DiveSite
+from divesites.models import Country, City, DiveSite
 from django.core.exceptions import ValidationError
 from notes.models import Note
 
@@ -11,13 +11,13 @@ class NoteTestCase(TestCase):
 
     def test_note_with_multiple_location(self):
         country = Country(name='A')
-        destination = Destination(name='A', country=country)
-        divesite = DiveSite(name='A', destination=destination)
+        City = City(name='A', country=country)
+        divesite = DiveSite(name='A', City=City)
         note_country = Note(country=country)
         note_country.clean()
 
-        note_destination = Note(destination=destination)
-        note_destination.clean()
+        note_City = Note(City=City)
+        note_City.clean()
 
         note_divesite = Note(divesite=divesite)
         note_divesite.clean()

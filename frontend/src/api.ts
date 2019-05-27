@@ -40,6 +40,11 @@ export interface APIResults<T> {
   results: T[];
 }
 
+// export enum LocationTypeEnum {
+//   cities = 'cities',
+//   countries = 'countries'
+// }
+
 async function loadJson(path: string, options:any = {}) {
   
   if (options.headers == null) {
@@ -72,9 +77,14 @@ async function loadAuthJson(path:string , accessToken: string, options:any = {})
   return loadJson(path, options)
 }
 
-export async function getDestinations(params:{ limit: string } = { limit: '10' }): Promise<APIResults<IDestination>> {
+export async function getCountries(params:{ limit: string } = { limit: '10' }): Promise<APIResults<IDestination>> {
   const paramsObj = new URLSearchParams(params)
-  return loadJson(`/api/destinations?${paramsObj.toString()}`)
+  return loadJson(`/api/countries?${paramsObj.toString()}`)
+}
+
+export async function getCities(params:{ country: string, limit: string } = { country: 'Thailand', limit: '10' }): Promise<APIResults<IDestination>> {
+  const paramsObj = new URLSearchParams(params)
+  return loadJson(`/api/cities?${paramsObj.toString()}`)
 }
 
 export async function getDestination(country:string, destName:string): Promise<IDestination> {

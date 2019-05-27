@@ -1,6 +1,6 @@
 
 
-
+## Backend
 
 ### Installation
 
@@ -23,4 +23,14 @@ python manage.py createsuperuser --email admin@example.com --username admin
 
 ```
 python manage.py runserver
+```
+
+## Frontend
+
+###
+
+```
+cd frontend
+npm install
+npm start
 ```
