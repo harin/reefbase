@@ -61,7 +61,8 @@ class App extends React.Component{
             <Route path="/login/" component={Login} />
             <Route path="/about/" component={About} />
             <Route path="/destinations/" exact component={DestinationListPage} />
-            <Route path="/destinations/:country" component={DestinationListPage} />
+            <Route path="/destinations/:country" exact component={DestinationListPage} />
+            <Route path="/destinations/:country/:city" component={DestinationPage} />
           </div>
         </Router>
       </AppContext.Provider>

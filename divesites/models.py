@@ -51,7 +51,7 @@ class City(Location):
 
 class DiveSite(Location):
     zoom_level = models.IntegerField(default=11)
-    destination = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     
 
 # CREATE TABLE note (

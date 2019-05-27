@@ -1,3 +1,4 @@
+import { number } from "prop-types";
 
 export interface IUser {
   id: number;
@@ -5,12 +6,13 @@ export interface IUser {
   access_token: string;
 }
 
-export interface IDestination {
+export interface ICity {
   id: number;
   lat: number;
   lng: number;
-  divesites?: [any];
+  divesite_set?: [IDiveSite];
   zoom_level: number;
+  country_name?: string;
 }
 
 export interface IDiveSite {
@@ -40,12 +42,13 @@ export interface APIResults<T> {
   results: T[];
 }
 
+
 // export enum LocationTypeEnum {
 //   cities = 'cities',
 //   countries = 'countries'
 // }
 
-async function loadJson(path: string, options:any = {}) {
+export async function loadJson(path: string, options:any = {}) {
   
   if (options.headers == null) {
     options.headers = {}
@@ -77,18 +80,25 @@ async function loadAuthJson(path:string , accessToken: string, options:any = {})
   return loadJson(path, options)
 }
 
-export async function getCountries(params:{ limit: string } = { limit: '10' }): Promise<APIResults<IDestination>> {
+export async function getCountries(params:{ limit: string } = { limit: '10' }): Promise<APIResults<ICity>> {
   const paramsObj = new URLSearchParams(params)
   return loadJson(`/api/countries?${paramsObj.toString()}`)
 }
 
-export async function getCities(params:{ country: string, limit: string } = { country: 'Thailand', limit: '10' }): Promise<APIResults<IDestination>> {
+export async function getCities(params:{ country_name: string, limit: string } = { country_name: 'Thailand', limit: '10' }): Promise<APIResults<ICity>> {
   const paramsObj = new URLSearchParams(params)
-  return loadJson(`/api/cities?${paramsObj.toString()}`)
+  const data = await loadJson(`/api/cities?${paramsObj.toString()}`)
+  data.results = data.results.map((datum: ICity) => {
+    datum.country_name = params.country_name
+    return datum
+  })
+  return data
 }
 
-export async function getDestination(country:string, destName:string): Promise<IDestination> {
-  return loadJson(`/api/destinations/divesites/${country}/${destName}`)
+export async function getDestination(country_name:string, city_name:string): Promise<APIResults<ICity>> {
+  const paramsObj = new URLSearchParams({ country_name, city_name, include_divesites: 'true' })
+  const data = await loadJson(`/api/cities?${paramsObj.toString()}`)
+  return data
 }
 
 export async function getDiveSites(query?:any) {

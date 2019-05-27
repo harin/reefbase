@@ -9,7 +9,7 @@ const About = () =>
                     <p>The goal of <a href="/" className="has-text-weight-bold">Reefbase</a> is to be a place where scuba divers can collect information about a dive site before, during, and after a diving trip.</p><br />
                     <p>Currently, the application is in development mode, so things will change and data could get lost.</p><br />
                     <p>The dive site geo GPS coordinate are from <a href="http://divesites.com" target="_blank">divesites.com</a></p><br />
-                    <p>Created by <a href="https://harinsang.com">Harin Sanghirun</a>.</p>
+                    <p>Created by <a href="https://harinsang.com" target="_blank">Harin Sanghirun</a>.</p>
                 </div>
             </div>
         </div>

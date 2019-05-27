@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
 import diveflag from './diverflag.png'
 import DestinationCard from './DestinationCard';
-import {getDestination, IDiveSite, IDestination} from './api'
+import {getDestination, IDiveSite, ICity} from './api'
 
 
 const Flag = ({ site, lat, lng, clickHandler=()=>{} }: { site:IDiveSite, lat:number, lng:number, clickHandler?: () => void})=> {
@@ -23,17 +23,17 @@ const Flag = ({ site, lat, lng, clickHandler=()=>{} }: { site:IDiveSite, lat:num
 }
 
 function Destination(props: any) {
-    const [sites, setSites] = useState<IDiveSite[]>([])
-    const [destination, setDestination] = useState<IDestination | null>(null)
+    const [diveSites, setDiveSites] = useState<IDiveSite[]>([])
+    const [destination, setDestination] = useState<ICity | null>(null)
     const [activeSite, setActiveSite] = useState<any>(null)
 
     useEffect(() => {
         (async function() {
-            const result = await getDestination(props.match.params.country, props.match.params.name)
+            const data = await getDestination(props.match.params.country, props.match.params.city)
+            const result = data.results[0]
             setDestination(result)
-            console.log('result', result)
-            const diveSites = result.divesites || []
-            setSites(diveSites)
+            const diveSites = result.divesite_set || []
+            setDiveSites(diveSites)
             if (diveSites.length > 0) setActiveSite(diveSites[0])
         })()
     }, [props.match.params.country, props.match.params.name])
@@ -48,7 +48,7 @@ function Destination(props: any) {
                     defaultZoom={destination.zoom_level}
                 >
                 {
-                    sites.map(site => <Flag 
+                    diveSites.map(site => <Flag 
                         key={site.id} 
                         lat={site.lat} 
                         lng={site.lng} 

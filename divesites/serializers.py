@@ -20,14 +20,18 @@ class CountrySerializer(serializers.HyperlinkedModelSerializer):
         model = Country
         fields = '__all__'
 
-class CitySerializer(serializers.HyperlinkedModelSerializer):
-    id = serializers.ReadOnlyField()
-    class Meta:
-        model = City
-        fields = '__all__'
 
 class DiveSiteSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     class Meta:
         model = DiveSite
         fields = '__all__'
+
+
+class CitySerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+    divesite_set = DiveSiteSerializer(many=True, required=False)
+    class Meta:
+        model = City
+        fields = '__all__'
+
