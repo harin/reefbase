@@ -6,10 +6,19 @@ import { getCountries, getCities, ICity, loadJson } from './api'
 const Level = (props: any) => <div className="level">{props.children}</div>
 
 function DestinationList(props: { locationType: string, country?: string }) {
-    const { locationType } = props
+    const { locationType, country } = props
     const [isLoading, setIsLoading] = useState(true)
     const [destinations, setDestinations] = useState<ICity[]>([])
     const [next, setNext] = useState(null as string | null)
+
+    let breadcrumb = [{ name: 'Countries', href: '/destinations' }]
+    if (country != null) {
+        breadcrumb.push({
+            name: country,
+            href: `/destinations/${country}`
+        })
+    }
+
     useEffect(() => {
         (async function () {
             try {
@@ -31,6 +40,7 @@ function DestinationList(props: { locationType: string, country?: string }) {
 
     return (
         <DestinationList_ 
+            breadcrumb={breadcrumb}
             isLoading={isLoading} 
             destinations={destinations} 
             locationType={locationType}
@@ -58,7 +68,7 @@ const Countries = ({ dest }: { dest: any }) => (
     >
         <div className="title is-4"
             style={{ color: 'white', height: '100%', verticalAlign: 'center' }}>
-            {dest.name} ({dest.num_divesite})
+            {dest.name} <span className="tag is-dark">{dest.num_divesite} divesites</span>
         </div>
     </Link>
 )
@@ -70,7 +80,8 @@ const Cities = ({ dest }: { dest: any }) => (
     >
         <div className="title is-4"
             style={{ color: 'white', height: '100%', verticalAlign: 'center' }}>
-            {dest.name} ({dest.num_divesite})
+            {dest.name} <span className="tag is-dark">{dest.num_divesite} divesites</span>
+
         </div>
     </Link>
 )
@@ -80,10 +91,14 @@ const Dest = ({ dest, locationType }: { dest: any, locationType: string }) => {
     return <Cities dest={dest} />
 }
 
+interface IBreadcrumb {
+    href: string;
+    name: string;
+}
 
-
-export const DestinationList_ = ({ isLoading, destinations, locationType, hasMore, loadMoreHandler } : 
+export const DestinationList_ = ({ breadcrumb, isLoading, destinations, locationType, hasMore, loadMoreHandler } : 
     {
+        breadcrumb: IBreadcrumb[],
         isLoading: boolean, 
         destinations: ICity[], 
         locationType: string,
@@ -93,7 +108,17 @@ export const DestinationList_ = ({ isLoading, destinations, locationType, hasMor
     <div className="section">
         <div className="container">
             <Level>
-                <h1 className='title is-3' style={{ paddingLeft: 23 }}>Destinations</h1>
+                <nav className="breadcrumb" aria-label="breadcrumbs">
+                    <ul>
+                    {
+                        breadcrumb.map((crumb, idx) =>
+                            <li key={idx} className={idx === (breadcrumb.length - 1) ? 'is-active': ''}>
+                                <a href={crumb.href} className='title is-3' style={{ padding: '10px'}}>{ crumb.name }</a>
+                            </li>
+                        )
+                    }
+                    </ul>
+                </nav>
             </Level>
             <Level>
                 <div className="tile is-parent" style={{ flexWrap: 'wrap' }}>
