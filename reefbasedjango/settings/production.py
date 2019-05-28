@@ -14,7 +14,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'reefbase.herokuapp.com']
 root_ca_path = BASE_DIR/'amazon-rds-ca-cert.pem'
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': os.environ['DATABASE_NAME'],
         'HOST': os.environ['DATABASE_HOST'] ,
         'USER': os.environ['DATABASE_USER'],

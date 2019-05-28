@@ -36,6 +36,7 @@ class Navbar extends React.Component {
                         </a>
                         <Link className="navbar-item" to="/about">About</Link>
                         <Link className="navbar-item" to="/destinations">Destinations</Link>
+                        <Link className="navbar-item" to="/destinations/map">Map</Link>
                     </div>
                     {/* {user != null ?
                         <div className="navbar-end">

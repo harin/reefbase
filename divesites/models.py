@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 
 # Create your models here.
 
@@ -10,6 +10,7 @@ class Location(models.Model):
     zoom_level = models.IntegerField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    coord = models.PointField(srid=4326)
 
     class Meta:
         abstract = True

@@ -102,7 +102,8 @@ export async function getDestination(country_name:string, city_name:string): Pro
 }
 
 export async function getDiveSites(query?:any) {
-  return loadJson('/api/divesites')
+  const queryObj = new URLSearchParams(query)
+  return loadJson('/api/divesites?' + queryObj.toString())
 }
 
 export const Note = {
