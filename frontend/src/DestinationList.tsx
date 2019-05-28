@@ -52,6 +52,11 @@ function DestinationList(props: { locationType: string, country?: string }) {
                 const url = urlObj.href.replace(urlObj.origin, '')
 
                 const data = await loadJson(url)
+                data.results = data.results.map((datum: ICity) => {
+                    datum.country_name = country
+                    return datum
+                })
+
                 const newList = destinations.concat(data.results)
                 setDestinations(newList)
                 setNext(data.next)
