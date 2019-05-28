@@ -14,7 +14,7 @@ const MapPage = function(props: any) {
             radius: 10
         }
     )
-    const [diveSites, setDiveSites] = useState([])
+    const [diveSites, setDiveSites] = useState([] as IDiveSite[])
 
     function setSearchCircleFromMap(map: any) {
         const center = map.getCenter().toJSON()
@@ -23,7 +23,7 @@ const MapPage = function(props: any) {
         const lngDist = distance(0, bound.north, 0, bound.south, 'K')
         const radius = Math.min(latDist, lngDist)
         center.radius = radius
-        console.log('set circle to', center)
+        // console.log('set circle to', center)
         setSearchCircle(center)
     }
 
@@ -35,9 +35,23 @@ const MapPage = function(props: any) {
     }
 
     async function updateDiveSites() {
-        const data = await getDiveSites(searchCircle)
-        console.log('new dive sites', data)
+        const query = Object.assign({}, searchCircle) as any
+        query.page_size = 100
+
+        const data = await getDiveSites(query)
+        // console.log('new dive sites', data)
+
+        // const center: IDiveSite = {
+        //     id: 1,
+        //     lat: searchCircle.lat,
+        //     lng: searchCircle.lng,
+        //     name: 'center',
+        //     destination: '',
+        //     country: ''
+        // }
+
         setDiveSites(data.results)
+        // setDiveSites([center])
     }
 
     useEffect(() => {

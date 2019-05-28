@@ -5,10 +5,16 @@ from django.contrib.auth.models import User, Group
 from django.db.models import Count
 from divesites.models import Country, City, DiveSite
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 from divesites.serializers import (
     UserSerializer, GroupSerializer, CountrySerializer, 
     CitySerializer, DiveSiteSerializer,
 )
+
+class DynamicResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 200
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -58,6 +64,7 @@ class CityViewSet(viewsets.ModelViewSet):
 
 class DiveSiteViewSet(viewsets.ModelViewSet):
     serializer_class = DiveSiteSerializer
+    pagination_class = DynamicResultsSetPagination
     
     def get_queryset(self):
         queryset = DiveSite.objects.all()
