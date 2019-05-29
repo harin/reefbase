@@ -4,11 +4,11 @@ import distance from "./distance";
 import { getDiveSites, IDiveSite } from "./api";
 
 const MapPage = function(props: any) {
-  const [activeSite, setActiveSite] = useState(null as any);
+  const [activeSite, setActiveSite] = useState(null as any)
   const [searchCircle, setSearchCircle] = useState({
     lat: 26.5293775, //florida
     lng: -82.8939276,
-    radius: 10
+    radius: 240
   });
   const [diveSites, setDiveSites] = useState([] as IDiveSite[]);
 
