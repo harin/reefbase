@@ -14,6 +14,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         model = Group
         fields = ('url', 'name')
 
+
 class CountrySerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.ReadOnlyField()
     num_divesite = serializers.IntegerField(required=False)
@@ -23,8 +24,10 @@ class CountrySerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class DiveSiteSerializer(serializers.HyperlinkedModelSerializer):
+class DiveSiteSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
+    country_name = serializers.ReadOnlyField(required=False)
+    city_name = serializers.ReadOnlyField(required=False)
     class Meta:
         model = DiveSite
         fields = '__all__'

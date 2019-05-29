@@ -3,7 +3,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.auth.models import User, Group
-from django.db.models import Count
+from django.db.models import Count, F
 from divesites.models import Country, City, DiveSite
 from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
@@ -86,6 +86,12 @@ class DiveSiteViewSet(viewsets.ModelViewSet):
             pnt = GEOSGeometry(f'POINT({lng} {lat})', srid=4326)
             queryset = queryset.filter(coord__distance_lte=(pnt, D(km=radius))) \
                                 .annotate(distance=Distance('coord', pnt)).order_by('distance')
+        
+        include_location = self.request.query_params.get('include_location', None)
+        if include_location is not None:
+            queryset = queryset.annotate(country_name=F('city__country__name'))\
+                               .annotate(city_name=F('city__name'))
+
 
         return queryset
  

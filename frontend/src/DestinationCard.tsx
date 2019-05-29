@@ -4,7 +4,6 @@ import { AppContext } from './AppContext'
 
 interface IDestinationCardProps {
     site: IDiveSite;
-    // updateNoteHandler: () => any,
     isLoggedIn: boolean;
     country: string;
     city: string;
@@ -43,7 +42,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
     }
 
     render() {
-        const {site, country, city} = this.props
+        const {site} = this.props
         if (site == null) {
             return (
                 <div>
@@ -83,9 +82,8 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
         return (
         <div>
             <h2 className="title is-two">{site.name}</h2>
-            <h3 className="subtitle is-four">{city}, {country}</h3>
+            <h3 className="subtitle is-four">{site.city_name}, {site.country_name}</h3>
             { textarea }
-
         </div>
         )
     }

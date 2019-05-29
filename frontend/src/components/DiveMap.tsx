@@ -20,12 +20,13 @@ function DiveMap({
         diveSites: IDiveSite[], 
         centerCoord: { lat: number, lng: number},
         activeSite?: IDiveSite,
-        setActiveSite?: (site: IDiveSite)=>void,
+        setActiveSite?: (site?: IDiveSite)=>void,
         activeSiteCountry?: string,
         activeSiteCity?: string,
         onGoogleApiLoaded?: ({ map , maps }: { map: any, maps: any }) => void
         defaultZoom: number
     } ) {
+
     return (
         <div>
            <div style={{ height: '100vh', width: '100%', position: 'fixed', top: 0 }}>
@@ -58,6 +59,20 @@ function DiveMap({
                         <div className="column is-three-quarters"></div>
                         <div className="column">
                             <div className="tile box is-vertical" id="main-content">
+                                <span className="icon"
+                                    style={{
+                                        position: 'absolute',
+                                        right: 15,
+                                        top: 25,
+                                        cursor: 'pointer',
+                                        color: '#363636'
+                                    }}
+                                    onClick={() => {
+                                        if (setActiveSite != null) setActiveSite(undefined)
+                                    }}
+                                >
+                                    <i className="far fa-times-circle"></i>
+                                </span>
                                <DestinationCard 
                                     country={activeSiteCountry}
                                     city={activeSiteCity}

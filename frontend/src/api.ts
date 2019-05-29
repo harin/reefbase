@@ -20,8 +20,8 @@ export interface IDiveSite {
   lat: number;
   lng: number;
   name: string;
-  destination: string;
-  country: string;
+  country_name?: string;
+  city_name?: string;
 }
 
 export interface INote {
