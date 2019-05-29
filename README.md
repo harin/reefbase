@@ -20,6 +20,9 @@ python manage.py createsuperuser --email admin@example.com --username admin
 
 To setup database in production, set the 
 
+```
+DJANGO_SETTINGS_MODULE=reefbasedjango.settings.production <run command>
+```
 
 ### Running
 
