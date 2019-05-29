@@ -1,0 +1,21 @@
+build:
+  config:
+    DATABASE_HOST: reefbasedjango.cvmbi2jyhiae.us-east-1.rds.amazonaws.com
+    DATABASE_NAME: reefbase
+    DATABASE_PASSWORD: GuA8U&4SFd1tqF
+    DATABASE_USER: reefbaseapp
+    DEBUG: 'True'
+    DISABLE_COLLECTSTATIC: '1'
+    DJANGO_SETTINGS_MODULE: reefbasedjango.settings.production
+    FLASK_ENV: production
+    JWT_SECRET_KEY: alksdjf;iaqv39390ewfuasp
+    RDS_CA_PATH: /app/amazon-rds-ca-cert.pem
+    SECRET_KEY: 'i@(xf)%bp1&=1&e6+r+73aj)rb^9+^vw6kd0##cgcva=-wa$#3'
+    SQLALCHEMY_DATABASE_URI: >-
+      mysql+pymysql://reefbaseapp:5wMqQ!*%#!6r2a@reefbaseapp.cvmbi2jyhiae.us-east-1.rds.amazonaws.com/reefbaseapp
+  packages:
+    - gdal-bin
+  languages:
+    - python
+run:
+  web: gunicorn reefbasedjango.wsgi
