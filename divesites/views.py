@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D
+from django.contrib.gis.db.models.functions import Distance
 from django.contrib.auth.models import User, Group
 from django.db.models import Count
 from divesites.models import Country, City, DiveSite
@@ -83,7 +84,8 @@ class DiveSiteViewSet(viewsets.ModelViewSet):
         radius = self.request.query_params.get('radius', None)
         if lat is not None and lng is not None and radius is not None:
             pnt = GEOSGeometry(f'POINT({lng} {lat})', srid=4326)
-            queryset = queryset.filter(coord__distance_lte=(pnt, D(km=radius)))
+            queryset = queryset.filter(coord__distance_lte=(pnt, D(km=radius))) \
+                                .annotate(distance=Distance('coord', pnt)).order_by('distance')
 
         return queryset
  
