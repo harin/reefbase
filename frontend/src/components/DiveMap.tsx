@@ -14,7 +14,8 @@ function DiveMap({
         activeSiteCountry,
         activeSiteCity,
         onGoogleApiLoaded,
-        defaultZoom
+        defaultZoom,
+        autoZoom
     } : 
     { 
         diveSites: IDiveSite[], 
@@ -24,7 +25,8 @@ function DiveMap({
         activeSiteCountry?: string,
         activeSiteCity?: string,
         onGoogleApiLoaded?: ({ map , maps }: { map: any, maps: any }) => void
-        defaultZoom: number
+        defaultZoom: number,
+        autoZoom?: boolean
     } ) {
 
     return (
@@ -36,7 +38,18 @@ function DiveMap({
                     defaultCenter={centerCoord}
                     defaultZoom={defaultZoom}
                     yesIWantToUseGoogleMapApiInternals
-                    onGoogleApiLoaded={onGoogleApiLoaded}
+                    onGoogleApiLoaded={({map, maps}) => {
+                        if (autoZoom === true) {
+                            const bounds = new maps.LatLngBounds()
+                            diveSites.forEach((diveSite) => {
+                                bounds.extend({ lat: diveSite.lat, lng: diveSite.lng })
+                            })
+                            map.fitBounds(bounds)
+                        }
+
+                        if (onGoogleApiLoaded != null) 
+                            onGoogleApiLoaded({ map, maps })
+                    }}
                 >
                 {
                     diveSites.map(site => <DiveFlag 
@@ -63,7 +76,6 @@ function DiveMap({
                                     style={{
                                         position: 'absolute',
                                         right: 15,
-                                        top: 25,
                                         cursor: 'pointer',
                                         color: '#363636'
                                     }}

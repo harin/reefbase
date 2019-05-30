@@ -59,25 +59,23 @@ const MapPage = function(props: any) {
 
   return (
     <>
-
-
-            <div className="container is-fluid">
-                <div className="columns">
-                    <div className="column is-two-fifths"></div>
-                    <div className="column is-one-fifths">
-                        <div className="tile box is-vertical" id="main-content">
-                        <button
-                            className="button"
-                            style={{zIndex:10, border: 'none', background: 'rgba(21,60,106,0.9)', color: 'white'}}
-                            onClick={() => updateDiveSites()}
-                        >
-                            Redo Search Current Area
-                        </button>
-                        </div>
-                    </div>
-                    <div className="column is-two-fifths"></div>
-                </div>
-            </div>
+      <div className="container is-fluid">
+          <div className="columns">
+              <div className="column is-two-fifths"></div>
+              <div className="column is-one-fifths">
+                  <div className="tile box is-vertical" id="main-content">
+                  <button
+                      className="button"
+                      style={{zIndex:10, border: 'none', background: 'rgba(21,60,106,0.9)', color: 'white'}}
+                      onClick={() => updateDiveSites()}
+                  >
+                      Redo Search Current Area
+                  </button>
+                  </div>
+              </div>
+              <div className="column is-two-fifths"></div>
+          </div>
+      </div>
       <DiveMap
         diveSites={diveSites}
         activeSite={activeSite}
