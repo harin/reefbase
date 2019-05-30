@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import re_path, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from divesites import views as divesites_views
@@ -15,8 +15,8 @@ router.register(r'notes', notes_views.NoteViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^(?!api|api-auth|static).*', include('frontend.urls')),
+    re_path(r'^api/', include(router.urls)),
+    re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    re_path(r'^(?!api|api-auth|static|site\.webmanifest|favicon-.*\.png).*', include('frontend.urls')),
 ]
 
