@@ -10,7 +10,7 @@ export interface ICity {
   id: number;
   lat: number;
   lng: number;
-  divesite_set?: [IDiveSite];
+  divesite_set?: IDiveSite[];
   zoom_level: number;
   country_name?: string;
 }
@@ -98,6 +98,18 @@ export async function getCities(params:{ country_name: string, limit: string } =
 export async function getDestination(country_name:string, city_name:string): Promise<APIResults<ICity>> {
   const paramsObj = new URLSearchParams({ country_name, city_name, include_divesites: 'true' })
   const data = await loadJson(`/api/cities?${paramsObj.toString()}`)
+  if (data.results.length > 0) {
+    data.results = data.results.map((result: ICity) => {
+      if (result.divesite_set == null) return result
+      result.divesite_set = result.divesite_set.map((datum: IDiveSite) => {
+        datum.country_name = country_name
+        datum.city_name = city_name
+        return datum
+      })
+      return result
+    })
+  }
+
   return data
 }
 

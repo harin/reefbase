@@ -98,8 +98,13 @@ body, html {
   box-shadow: 0px 5px 4px rgba(0, 0, 0, 0.1);
 }
 
-.navbar-item .title {
-  color: white;
+.navbar-item {
+  & {
+    color: white;
+  }
+  .title {
+    color: white;
+  }
 }
 
 #login-button {
