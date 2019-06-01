@@ -1,7 +1,9 @@
-from django.conf.urls import re_path, include
+from django.urls import re_path, include, path
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+
 
 from rest_framework import routers, serializers, viewsets
 from divesites import views as divesites_views
@@ -20,6 +22,7 @@ router.register(r'divelogs', divelogs_views.DiveLogViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
+    path('admin/', admin.site.urls),
     re_path(r'^api/', include(router.urls)),
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ] 
@@ -27,5 +30,5 @@ urlpatterns = [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += [
-    re_path(r'^(?!api|api-auth|static|site\.webmanifest|favicon-.*\.png).*', include('frontend.urls'))
+    re_path(r'^(?!api|api-auth|static|site\.webmanifest|favicon-.*\.png|admin).*', include('frontend.urls'))
 ]

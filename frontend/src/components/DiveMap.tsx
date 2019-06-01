@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import GoogleMapReact from 'google-map-react';
 import DestinationCard from '../DestinationCard';
-import {getDestination, IDiveSite, ICity} from '../api'
+import {getDestination, ILocation, ICity} from '../api'
 import DiveFlag from './DiveFlag'
-
+import { meanBy } from 'lodash-es';
 
 
 function DiveMap({ 
-        diveSites, 
+        locations, 
         centerCoord,
         activeSite,
-        setActiveSite,
+        setActiveLocation,
         activeSiteCountry,
         activeSiteCity,
         onGoogleApiLoaded,
@@ -18,10 +18,10 @@ function DiveMap({
         autoZoom
     } : 
     { 
-        diveSites: IDiveSite[], 
-        centerCoord: { lat: number, lng: number},
-        activeSite?: IDiveSite,
-        setActiveSite?: (site?: IDiveSite)=>void,
+        locations: ILocation[], 
+        centerCoord?: { lat: number, lng: number},
+        activeSite?: ILocation,
+        setActiveLocation?: (site?: ILocation)=>void,
         activeSiteCountry?: string,
         activeSiteCity?: string,
         onGoogleApiLoaded?: ({ map , maps }: { map: any, maps: any }) => void
@@ -29,19 +29,28 @@ function DiveMap({
         autoZoom?: boolean
     } ) {
 
+    if (centerCoord == null) {
+        const lat = meanBy(locations, 'lat')
+        const lng = meanBy(locations, 'lng')
+        console.log(locations)
+
+        centerCoord = { lat, lng }
+    }
+
     return (
         <div>
            <div style={{ height: '100vh', width: '100%', position: 'fixed', top: 0 }}>
-           {diveSites != null ?
+           {locations != null ?
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyCaxeoUHkl2GK3sKFaNvLfoRWMTm0EbzK0' }}
                     defaultCenter={centerCoord}
                     defaultZoom={defaultZoom}
+                    hoverDistance={5}
                     yesIWantToUseGoogleMapApiInternals
                     onGoogleApiLoaded={({map, maps}) => {
                         if (autoZoom === true) {
                             const bounds = new maps.LatLngBounds()
-                            diveSites.forEach((diveSite) => {
+                            locations.forEach((diveSite) => {
                                 bounds.extend({ lat: diveSite.lat, lng: diveSite.lng })
                             })
                             map.fitBounds(bounds)
@@ -52,12 +61,12 @@ function DiveMap({
                     }}
                 >
                 {
-                    diveSites.map(site => <DiveFlag 
+                    locations.map(site => <DiveFlag 
                         key={site.id} 
                         lat={site.lat} 
                         lng={site.lng} 
                         site={site} 
-                        clickHandler={setActiveSite}/>
+                        clickHandler={setActiveLocation}/>
                     )
                 }
                 </GoogleMapReact>
@@ -80,7 +89,7 @@ function DiveMap({
                                         color: '#363636'
                                     }}
                                     onClick={() => {
-                                        if (setActiveSite != null) setActiveSite(undefined)
+                                        if (setActiveLocation != null) setActiveLocation(undefined)
                                     }}
                                 >
                                     <i className="far fa-times-circle"></i>

@@ -77,12 +77,12 @@ const MapPage = function(props: any) {
           </div>
       </div>
       <DiveMap
-        diveSites={diveSites}
+        locations={diveSites}
         activeSite={activeSite}
         centerCoord={{ lat: searchCircle.lat, lng: searchCircle.lng }}
         activeSiteCountry={""}
         activeSiteCity={""}
-        setActiveSite={(activeSite: any) => setActiveSite(activeSite)}
+        setActiveLocation={(activeSite: any) => setActiveSite(activeSite)}
         onGoogleApiLoaded={onLoad}
         defaultZoom={8}
       />

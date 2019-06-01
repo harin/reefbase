@@ -37,10 +37,12 @@ class GroupViewSet(viewsets.ModelViewSet):
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.annotate(num_divesite=Count('city__divesite')).order_by('-num_divesite').all()
     serializer_class =  CountrySerializer
+    pagination_class = DynamicResultsSetPagination
 
 
 class CityViewSet(viewsets.ModelViewSet):
     serializer_class = CitySerializer
+    pagination_class = DynamicResultsSetPagination
 
     def get_queryset(self):
         queryset = City.objects.annotate(num_divesite=Count('divesite')).order_by('-num_divesite').all()

@@ -22,12 +22,16 @@ function DestinationPage(props: any) {
 function DestinationListPage(props: any) {
   const pathname = props.location.pathname;
   if (pathname === "/destinations") {
-    return <DestinationList locationType="countries" />;
+    return <DestinationList 
+      locationType="countries" 
+      history={props.history}
+    />;
   }
   return (
     <DestinationList
       locationType="cities"
       country={props.match.params.country}
+      history={props.history}
     />
   );
 }

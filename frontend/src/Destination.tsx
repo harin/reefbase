@@ -94,12 +94,12 @@ function Destination(props: any) {
       <div>
         {destination != null && diveSites != null && (
           <DiveMap
-            diveSites={diveSites}
+            locations={diveSites}
             activeSite={activeSite}
             centerCoord={{ lat: destination.lat, lng: destination.lng }}
             activeSiteCountry={""}
             activeSiteCity={""}
-            setActiveSite={(activeSite: any) => setActiveSite(activeSite)}
+            setActiveLocation={(activeSite: any) => setActiveSite(activeSite)}
             autoZoom={true}
             defaultZoom={8}
           />

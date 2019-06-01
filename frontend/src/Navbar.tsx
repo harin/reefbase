@@ -30,7 +30,7 @@ class Navbar extends React.Component {
       >
         <div className="navbar-brand">
           <a href="/" className="navbar-item">
-            <div className="title" style={{ paddingRight: 20 }}>
+            <div className="title tooltip" style={{ paddingRight: 20 }}>
               Reefbase
             </div>
           </a>
