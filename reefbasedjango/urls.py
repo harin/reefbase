@@ -1,5 +1,8 @@
 from django.conf.urls import re_path, include
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.conf.urls.static import static
+
 from rest_framework import routers, serializers, viewsets
 from divesites import views as divesites_views
 from notes import views as notes_views
@@ -19,6 +22,10 @@ router.register(r'divelogs', divelogs_views.DiveLogViewSet)
 urlpatterns = [
     re_path(r'^api/', include(router.urls)),
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    re_path(r'^(?!api|api-auth|static|site\.webmanifest|favicon-.*\.png).*', include('frontend.urls')),
-]
+] 
+# only for development
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+urlpatterns += [
+    re_path(r'^(?!api|api-auth|static|site\.webmanifest|favicon-.*\.png).*', include('frontend.urls'))
+]

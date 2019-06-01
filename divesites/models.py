@@ -54,6 +54,9 @@ class DiveSite(Location):
     zoom_level = models.IntegerField(default=11)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'{self.name} {self.id}'
+
 
 # CREATE TABLE note (
 #   id INT PRIMARY KEY AUTO_INCREMENT,

@@ -3,6 +3,8 @@ from divesites.models import DiveSite
 from django.contrib.postgres.fields import JSONField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
+from datetime import date
+# from django.utils import timezone
 
 # Create your models here.
 
