@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'divesites.apps.DivesiteConfig',
     'notes.apps.NotesConfig',
+    'divelogs.apps.DivelogsConfig',
     'frontend',
     'django.contrib.gis'
 ]
