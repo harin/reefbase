@@ -2,7 +2,7 @@
 // @import "../node_modules/bulma/css/bulma.min.css";
 @import "../node_modules/bulma/sass/utilities/mixins.sass";
 @import '../node_modules/bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.sass';
-
+@import '../node_modules/bulma-extensions/bulma-calendar/dist/css/bulma-calendar.min.css';
 
 .box {
   &.is-loading {
@@ -82,14 +82,14 @@ body, html {
   border: none;
 }
 
-.textarea {
+.borderless {
   border: none;
   height: 100%;
   border-color: transparent;
   box-shadow: none;
 }
 
-.textarea:focus {
+.borderless:focus {
   box-shadow: none;
   border-color: none;
 }

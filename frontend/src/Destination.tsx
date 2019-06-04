@@ -104,47 +104,6 @@ function Destination(props: any) {
             defaultZoom={8}
           />
         )}
-
-        {/* <div style={{ height: '100vh', width: '100%', position: 'fixed', top: 0 }}>
-           {destination != null ?
-                <GoogleMapReact
-                    bootstrapURLKeys={{ key: 'AIzaSyCaxeoUHkl2GK3sKFaNvLfoRWMTm0EbzK0' }}
-                    defaultCenter={destination}
-                    defaultZoom={destination.zoom_level}
-                >
-                {
-                    diveSites.map(site => <Flag 
-                        key={site.id} 
-                        lat={site.lat} 
-                        lng={site.lng} 
-                        site={site} 
-                        clickHandler={() => {setActiveSite(site)}}/>
-                    )
-                }
-                </GoogleMapReact>
-           :false}
-            </div>
-            <div id="content">
-            
-            {activeSite != null ?
-            <section className="section">
-                <div className="container is-fluid">
-                    <div className="columns">
-                        <div className="column is-three-quarters"></div>
-                        <div className="column">
-                            <div className="tile box is-vertical" id="main-content">
-                               <DestinationCard 
-                                    country={props.match.params.country}
-                                    city={props.match.params.city}
-                                    site={activeSite} 
-                                    isLoggedIn={true} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            :null}
-            </div> */}
       </div>
     </>
   );

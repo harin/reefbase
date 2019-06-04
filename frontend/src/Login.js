@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { AppContext } from './AppContext.tsx'
 
 const Login = (props) => {
+    return <div>Nothing to see here </div>
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)

@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.scss";
+import '../node_modules/bulma-extensions/bulma-calendar/dist/js/bulma-calendar'
 import Navbar from "./Navbar";
 import {
   BrowserRouter as Router,
@@ -9,11 +10,12 @@ import {
 } from "react-router-dom";
 import Destination from "./Destination";
 import DestinationList from "./DestinationList";
-import Login from "./Login";
 import About from "./About";
 import MapPage from "./MapPage";
+import DiveLogsPage from './DiveLogsPage'
+import ErrorView from './components/ErrorView'
 import { AppContext, DEFAULT_STATE } from "./AppContext";
-import { IUser, auth } from "./api";
+import { IUser } from "./api";
 
 function DestinationPage(props: any) {
   return <Destination {...props} />;
@@ -40,18 +42,15 @@ class App extends React.Component {
   state = DEFAULT_STATE;
   constructor(props: any) {
     super(props);
-    let user = localStorage.getItem("user");
-    if (user != null) {
-      let tempUser = JSON.parse(user) || {};
-      if (tempUser.access_token != null) {
-        this.state.user = tempUser;
-        auth.isTokenValid(tempUser.access_token).then(isValid => {
-          if (isValid === false) {
-            this.updateUser(null);
-          }
-        });
-      }
-    }
+   
+  }
+
+  static getDerivedStateFromError(error: any) {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error: any, info: any) {
+    this.setState({ error })
   }
 
   updateUser = (user: IUser | null) => {
@@ -60,6 +59,16 @@ class App extends React.Component {
   };
 
   render() {
+
+    if (this.state.hasError) {
+      return (
+        <>
+          <Navbar />
+          <ErrorView />
+        </>
+      )
+    }
+
     return (
       <AppContext.Provider
         value={{
@@ -75,7 +84,6 @@ class App extends React.Component {
               path="/"
               render={() => <Redirect to="/destinations" />}
             />
-            <Route path="/login/" component={Login} />
             <Route path="/about/" component={About} />
             <Route
               path="/destinations/"
@@ -93,6 +101,14 @@ class App extends React.Component {
                 path="/destinations/:country/:city"
                 exact
                 component={DestinationPage}
+              />
+              <Route
+                path='/divelogs'
+                component={DiveLogsPage}
+              />
+              <Route
+                path='/divelogs/create'
+                component={DiveLogsPage}
               />
             </Switch>
           </div>

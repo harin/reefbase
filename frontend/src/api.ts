@@ -46,6 +46,16 @@ export interface APIResults<T> {
   results: T[];
 }
 
+export interface IDiveLog {
+  date: string;
+  user_id?: number; // some times can use session instead
+  divesite_id: number;
+  time?: string;
+  observations?: string;
+  meta?: string;
+  rating?: number
+}
+
 // export enum LocationTypeEnum {
 //   cities = 'cities',
 //   countries = 'countries'
@@ -138,6 +148,55 @@ export async function getDiveSites(query?: any) {
   return loadJson("/api/divesites?" + queryObj.toString());
 }
 
+export async function getDiveLogs() {
+  return loadJson('/api/divelogs')
+}
+
+
+
+function getCookie(name: string) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+export async function createDiveLog(diveLog: IDiveLog) {
+  const csrftoken = getCookie('csrftoken') || ''
+  const headers = new Headers()
+  headers.append('Content-Type', 'application/json')
+  headers.append('X-CSRFToken', csrftoken)
+  const options: RequestInit = { 
+    method: 'POST',
+    body: JSON.stringify(diveLog),
+    headers
+  }
+  const resp = await fetch('/api/divelogs/', options)
+
+  if (resp.ok) {
+    const data = await resp.json()
+    return data
+  }
+
+  if (resp.status == 400) {
+    const errors = await resp.json()
+    const formikError:any = {}
+    Object.keys(errors).forEach((key) => {
+      formikError[key] = errors[key][0]
+    })
+    return { errors: formikError }
+  }
+  // handle other errors
+}
+
 export const Note = {
   async updateNote({
     diveSiteId,
@@ -185,47 +244,4 @@ export const Note = {
   }
 };
 
-export const auth = {
-  async register({
-    username,
-    email,
-    password
-  }: {
-    username: string;
-    email: string;
-    password: string;
-  }) {
-    const options = {
-      method: "POST",
-      body: JSON.stringify({ username, email, password }),
-      headers: { "Content-Type": "application/json" }
-    };
-    const data = await loadJson("/auth/api-register", options);
-    console.log("data", data);
-    return this.login(email, password);
-  },
-  async login(email: string, password: string) {
-    const options = {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-      headers: { "Content-Type": "application/json" }
-    };
-    const data = await loadJson("/auth/api-login", options);
-    return data;
-  },
-  async logout(accessToken: string) {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`
-      }
-    };
-    const data = await loadJson("/auth/api-logout", options);
-    return data;
-  },
-  async isTokenValid(accessToken: string): Promise<boolean> {
-    const { valid } = await loadAuthJson("/auth/check-token", accessToken);
-    return valid;
-  }
-};
+

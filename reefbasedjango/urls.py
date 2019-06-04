@@ -23,6 +23,7 @@ router.register(r'divelogs', divelogs_views.DiveLogViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     re_path(r'^api/', include(router.urls)),
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ] 
@@ -30,5 +31,5 @@ urlpatterns = [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 urlpatterns += [
-    re_path(r'^(?!api|api-auth|static|site\.webmanifest|favicon-.*\.png|admin).*', include('frontend.urls'))
+    re_path(r'^(?!api|api-auth|static|site\.webmanifest|favicon-.*\.png|admin|accounts.*).*', include('frontend.urls'))
 ]

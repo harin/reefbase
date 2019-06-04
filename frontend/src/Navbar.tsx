@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { AppContext } from "./AppContext";
-import { auth } from "./api";
 
 class Navbar extends React.Component {
   static contextType = AppContext;
@@ -10,7 +9,7 @@ class Navbar extends React.Component {
   };
 
   logout = async () => {
-    await auth.logout(this.context.user.access_token);
+    // await auth.logout(this.context.user.access_token);
     this.context.updateUser(null);
   };
 

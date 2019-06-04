@@ -9,7 +9,14 @@ import { DestinationList_ } from '../DestinationList'
 import About from '../About'
 import destinations from './destinations.json'
 import { BrowserRouter as Router } from "react-router-dom";
+import App from '../App'
 import '../App.scss'
+import DiveLogForm from '../components/DiveLogForm'
+import countries_result from './countries.json'
+import divesites from './divesites'
+import DiveSiteSelect from '../components/DiveSiteSelect';
+
+
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
 
@@ -36,3 +43,27 @@ storiesOf('DestionationList', module)
   
 storiesOf('About', module)
     .add('about', () => <About />)
+
+storiesOf('DiveLogForm', module)
+    .add('base', () =>  
+      <DiveLogForm 
+        getDiveSites={(_) => {
+          return Promise.resolve({
+            results: divesites
+          }) 
+        }}
+        countries={countries_result.results}
+        diveSites={divesites}
+      />)
+
+storiesOf("DiveSiteselect", module)
+  .add('base', () => (
+    <DiveSiteSelect
+      getDiveSites={(_) => {
+        return Promise.resolve({
+          results: divesites
+        }) 
+      }}
+    />
+  )
+  );

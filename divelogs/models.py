@@ -10,14 +10,15 @@ from datetime import date
 
 class DiveLog(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    divesite = models.ForeignKey(DiveSite, on_delete=models.SET_NULL, null=True)
+    divesite = models.ForeignKey(DiveSite, on_delete=models.SET_DEFAULT, default=1)
 
     date = models.DateField()
     time = models.TimeField(null=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    observations = models.TextField(blank=True)
-    meta = JSONField()
+    notes = models.TextField(blank=True)
+    meta = JSONField(null=True)
     rating = models.FloatField(
-        validators=[MinValueValidator(0), MaxValueValidator(5)]
+        validators=[MinValueValidator(0), MaxValueValidator(5)],
+        null=True
     )

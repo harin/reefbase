@@ -29,13 +29,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'rest_framework',
     'divesites.apps.DivesiteConfig',
     'notes.apps.NotesConfig',
     'divelogs.apps.DivelogsConfig',
     'frontend',
-    'django.contrib.gis',
-    'rest_framework',
-
 ]
 
 REST_FRAMEWORK = {
@@ -64,7 +63,10 @@ ROOT_URLCONF = 'reefbasedjango.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'frontend')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'frontend')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,3 +127,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'frontend', "build"),
     os.path.join(BASE_DIR, 'frontend', "build", "static"),
 )
+
+LOGIN_REDIRECT_URL = '/'

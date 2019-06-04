@@ -57,7 +57,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
                 <div className='full-height'>
                     <textarea 
                         autoFocus={true}
-                        className="textarea" 
+                        className="textarea borderless" 
                         placeholder="Take notes here."
                         ref={c => this._textarea = c}
                     >
@@ -70,7 +70,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
             textarea = (
                 <div>
                     <textarea 
-                        className="textarea" 
+                        className="textarea borderless" 
                         placeholder="Notes coming soon!"
                         // placeholder="Please login to take notes" 
                         ref={c => this._textarea = c}

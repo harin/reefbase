@@ -6,6 +6,18 @@ import DiveFlag from './DiveFlag'
 import { meanBy } from 'lodash-es';
 
 
+interface Props {
+    locations: ILocation[], 
+    centerCoord?: { lat: number, lng: number},
+    activeSite?: ILocation,
+    setActiveLocation?: (site?: ILocation)=>void,
+    activeSiteCountry?: string,
+    activeSiteCity?: string,
+    onGoogleApiLoaded?: ({ map , maps }: { map: any, maps: any }) => void
+    defaultZoom?: number,
+    autoZoom?: boolean
+}
+
 function DiveMap({ 
         locations, 
         centerCoord,
@@ -16,23 +28,11 @@ function DiveMap({
         onGoogleApiLoaded,
         defaultZoom,
         autoZoom
-    } : 
-    { 
-        locations: ILocation[], 
-        centerCoord?: { lat: number, lng: number},
-        activeSite?: ILocation,
-        setActiveLocation?: (site?: ILocation)=>void,
-        activeSiteCountry?: string,
-        activeSiteCity?: string,
-        onGoogleApiLoaded?: ({ map , maps }: { map: any, maps: any }) => void
-        defaultZoom: number,
-        autoZoom?: boolean
-    } ) {
+    } : Props ) {
 
-    if (centerCoord == null) {
+    if (autoZoom === true && locations.length > 0) {
         const lat = meanBy(locations, 'lat')
         const lng = meanBy(locations, 'lng')
-        console.log(locations)
 
         centerCoord = { lat, lng }
     }
@@ -51,6 +51,7 @@ function DiveMap({
                         if (autoZoom === true) {
                             const bounds = new maps.LatLngBounds()
                             locations.forEach((diveSite) => {
+                                console.log(diveSite.lat, diveSite.lng)
                                 bounds.extend({ lat: diveSite.lat, lng: diveSite.lng })
                             })
                             map.fitBounds(bounds)
