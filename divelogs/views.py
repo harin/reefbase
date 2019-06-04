@@ -13,7 +13,7 @@ class DynamicResultsSetPagination(PageNumberPagination):
     max_page_size = 200
 
 class DiveLogSerializer(serializers.ModelSerializer):
-    user_id = serializers.IntegerField()
+    user_id = serializers.IntegerField() # figure out proper way to handle this
     divesite_id = serializers.IntegerField()
     class Meta:
         model = DiveLog

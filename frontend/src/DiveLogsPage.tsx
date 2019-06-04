@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import DiveLogForm from './components/DiveLogForm'
 import DiveLogsList from './components/DiveLogsList'
 import CardRight from './components/CardRight'
-import { getDiveSites, getDiveLogs } from './api'
 import DiveMap from './components/DiveMap'
 
-const DiveLogsPage = () => {
+import { getDiveSites, getDiveLogs} from './api'
+
+export const DiveLogsPage = () => {
     const [diveLogs, setDiveLogs ] = useState([] as any[])
     const [isLoading, setIsLoading] = useState(false)
     const [isCreate, setIsCreate] = useState(false)
@@ -27,24 +28,33 @@ const DiveLogsPage = () => {
           centerCoord={{ lat: 0, lng: 0 }}
         />
         <CardRight>
-          <button
+       
+          {isCreate ? (
+
+            <DiveLogForm
+              getDiveSites={getDiveSites}
+              onSubmitted={() => window.location.reload()}
+              onCanceled={() => setIsCreate(false)}
+            />
+          ) : (
+            <>
+            <button
+            className="button"
             onClick={() => {
               setIsCreate(!isCreate);
             }}
           >
-            Create
+            + New Log
           </button>
-          {isCreate ? (
-            <DiveLogForm
-              getDiveSites={getDiveSites}
-              onSubmitted={() => window.location.reload()}
-            />
-          ) : (
             <DiveLogsList diveLogs={diveLogs} />
+            </>
+
           )}
         </CardRight>
       </>
     );
 }
 
-export default DiveLogsPage;
+
+
+export default DiveLogsPage

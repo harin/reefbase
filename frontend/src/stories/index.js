@@ -15,8 +15,7 @@ import DiveLogForm from '../components/DiveLogForm'
 import countries_result from './countries.json'
 import divesites from './divesites'
 import DiveSiteSelect from '../components/DiveSiteSelect';
-
-
+import { DiveLogsPage } from '../DiveLogsPage'
 
 storiesOf('Welcome', module).add('to Storybook', () => <Welcome showApp={linkTo('Button')} />);
 
@@ -44,26 +43,29 @@ storiesOf('DestionationList', module)
 storiesOf('About', module)
     .add('about', () => <About />)
 
-storiesOf('DiveLogForm', module)
-    .add('base', () =>  
+const getDiveSitesMock = (_) => {
+  return Promise.resolve({
+    results: divesites
+  }) 
+}
+
+storiesOf('DiveLog', module)
+    .add('form', () =>  
       <DiveLogForm 
-        getDiveSites={(_) => {
-          return Promise.resolve({
-            results: divesites
-          }) 
-        }}
+        getDiveSites={getDiveSitesMock}
         countries={countries_result.results}
         diveSites={divesites}
       />)
-
-storiesOf("DiveSiteselect", module)
-  .add('base', () => (
+  .add('select', () => (
     <DiveSiteSelect
-      getDiveSites={(_) => {
-        return Promise.resolve({
-          results: divesites
-        }) 
-      }}
+      getDiveSites={getDiveSitesMock}
     />
   )
-  );
+  )
+  .add('page', () => {
+    return (
+      <DiveLogsPage 
+        getDiveSites={getDiveSitesMock}
+      />
+    )
+  })

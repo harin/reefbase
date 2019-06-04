@@ -6,13 +6,15 @@ import { IDiveSite, APIResults, createDiveLog } from '../api'
 
 interface Props {
   getDiveSites: (q?: any) => Promise<APIResults<IDiveSite>>;
-  onSubmitted?: Function
+  onSubmitted?: Function,
+  onCanceled?: () => void
 }
 
 const DiveLogForm = (props: Props) => {
   const { 
     getDiveSites,
-    onSubmitted
+    onSubmitted,
+    onCanceled
   } = props;
   return (
     <Formik
@@ -38,14 +40,7 @@ const DiveLogForm = (props: Props) => {
         const { errors, handleChange } = props;
         return (
           <Form>
-            <div className="field is-grouped">
-              <div className="control">
-                <button className="button is-primary">Create</button>
-              </div>
-              <div className="control">
-                <button className="button is-text">Cancel</button>
-              </div>
-            </div>
+
             <div className="field">
               <label className="label">Date</label>
               <div className="control">
@@ -113,7 +108,10 @@ const DiveLogForm = (props: Props) => {
                 <button className="button is-primary">Create</button>
               </div>
               <div className="control">
-                <button className="button is-text">Cancel</button>
+                <button className="button is-text" onClick={(e) => {
+                  e.preventDefault()
+                  if (onCanceled != null) onCanceled()
+                }}>Cancel</button>
               </div>
             </div>
             <pre>{JSON.stringify(props, null, 2)}</pre>
