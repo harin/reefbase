@@ -76,7 +76,13 @@ function Destination(props: any) {
             setActiveLocation={(activeSite: any) => setActiveSite(activeSite)}
             autoZoom={true}
             defaultZoom={8}
+            onGoogleApiLoaded={({ map, maps }: {map:any, maps:any}) => {
+              map.addListener('click', () => {
+                setActiveSite(undefined)
+              })
+            }}
           >
+            {activeSite != null &&
               <section className="section">
                   <div className="container is-fluid">
                       <div className="columns">
@@ -90,9 +96,7 @@ function Destination(props: any) {
                                           cursor: 'pointer',
                                           color: '#363636'
                                       }}
-                                      onClick={() => {
-                                        setActiveSite(undefined)
-                                      }}
+                                      onClick={() => setActiveSite(undefined)}
                                   >
                                       <i className="far fa-times-circle"></i>
                                   </span>
@@ -108,6 +112,7 @@ function Destination(props: any) {
                       </div>
                   </div>
               </section>
+            }
             </DiveMap>
           }
       </div>

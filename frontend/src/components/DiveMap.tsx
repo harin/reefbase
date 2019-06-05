@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import GoogleMapReact from 'google-map-react';
+import GoogleMapReact, { ClickEventValue } from 'google-map-react';
 import DestinationCard from '../DestinationCard';
 import {getDestination, ILocation, ICity} from '../api'
 import DiveFlag from './DiveFlag'
@@ -16,7 +16,7 @@ interface Props {
     onGoogleApiLoaded?: ({ map , maps }: { map: any, maps: any }) => void
     defaultZoom?: number,
     autoZoom?: boolean,
-    children?: React.ReactNode
+    children?: React.ReactNode,
 }
 
 function DiveMap({ 
@@ -35,14 +35,13 @@ function DiveMap({
     if (autoZoom === true && locations.length > 0) {
         const lat = meanBy(locations, 'lat')
         const lng = meanBy(locations, 'lng')
-
         centerCoord = { lat, lng }
     }
 
     return (
         <div>
            <div style={{ height: '100vh', width: '100%', position: 'fixed', top: 0 }}>
-           {locations != null ?
+           {locations != null &&
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyCaxeoUHkl2GK3sKFaNvLfoRWMTm0EbzK0' }}
                     defaultCenter={centerCoord}
@@ -53,14 +52,14 @@ function DiveMap({
                         if (autoZoom === true) {
                             const bounds = new maps.LatLngBounds()
                             locations.forEach((diveSite) => {
-                                console.log(diveSite.lat, diveSite.lng)
                                 bounds.extend({ lat: diveSite.lat, lng: diveSite.lng })
                             })
                             map.fitBounds(bounds)
                         }
 
-                        if (onGoogleApiLoaded != null) 
+                        if (onGoogleApiLoaded != null) {
                             onGoogleApiLoaded({ map, maps })
+                        }
                     }}
                 >
                 {
@@ -73,7 +72,7 @@ function DiveMap({
                     )
                 }
                 </GoogleMapReact>
-           :false}
+           }
             </div>
             <div id="content">
                 {children}
