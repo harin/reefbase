@@ -3,6 +3,7 @@ import DiveLogForm from './components/DiveLogForm'
 import DiveLogsList from './components/DiveLogsList'
 import CardRight from './components/CardRight'
 import DiveMap from './components/DiveMap'
+import { meanBy } from 'lodash-es'
 
 import { getDiveSites, getDiveLogs} from './api'
 
@@ -20,37 +21,45 @@ export const DiveLogsPage = () => {
         })()
     }, [])
 
+    let lat = 0
+    let lng = 0
+    if (diveLogs.length > 0) {
+      lat = meanBy(diveLogs, (d) => d.divesite.lat)
+      lng = meanBy(diveLogs, (d) => d.divesite.lng)
+    }
+
     return (
       <>
         <DiveMap
-          locations={[]}
+          locations={diveLogs.map(d => d.divesite)}
           defaultZoom={8}
-          centerCoord={{ lat: 0, lng: 0 }}
-        />
-        <CardRight>
-       
-          {isCreate ? (
+          centerCoord={{ lat, lng }}
+          autoZoom={true}
+        >
+          <CardRight>
+            {isCreate ? (
 
-            <DiveLogForm
-              getDiveSites={getDiveSites}
-              onSubmitted={() => window.location.reload()}
-              onCanceled={() => setIsCreate(false)}
-            />
-          ) : (
-            <>
-            <button
-            className="button"
-            onClick={() => {
-              setIsCreate(!isCreate);
-            }}
-          >
-            + New Log
-          </button>
-            <DiveLogsList diveLogs={diveLogs} />
-            </>
+              <DiveLogForm
+                getDiveSites={getDiveSites}
+                onSubmitted={() => window.location.reload()}
+                onCanceled={() => setIsCreate(false)}
+              />
+            ) : (
+              <>
+              <button
+              className="button"
+              onClick={() => {
+                setIsCreate(!isCreate);
+              }}
+            >
+              + New Log
+            </button>
+              <DiveLogsList diveLogs={diveLogs} />
+              </>
 
-          )}
-        </CardRight>
+            )}
+          </CardRight>
+        </DiveMap>
       </>
     );
 }

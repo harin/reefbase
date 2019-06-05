@@ -1,36 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import GoogleMapReact from "google-map-react";
-import diveflag from "./diverflag.png";
 import DestinationCard from "./DestinationCard";
 import { getDestination, IDiveSite, ICity } from "./api";
 import DiveMap from "./components/DiveMap";
+import ErrorBoundary from './components/ErrorBoundary';
 
-const Flag = ({
-  site,
-  lat,
-  lng,
-  clickHandler = () => {}
-}: {
-  site: IDiveSite;
-  lat: number;
-  lng: number;
-  clickHandler?: () => void;
-}) => {
-  return (
-    <img
-      className="tooltip"
-      onClick={clickHandler}
-      src={diveflag}
-      alt="Diver Down Flag"
-      data-tooltip={site.name}
-      style={{
-        boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-        cursor: "pointer"
-      }}
-    />
-  );
-};
 
 function Destination(props: any) {
   const [diveSites, setDiveSites] = useState<IDiveSite[]>([]);
@@ -92,7 +66,7 @@ function Destination(props: any) {
         </nav>
       </div>
       <div>
-        {destination != null && diveSites != null && (
+        {destination != null && diveSites != null && 
           <DiveMap
             locations={diveSites}
             activeSite={activeSite}
@@ -102,8 +76,40 @@ function Destination(props: any) {
             setActiveLocation={(activeSite: any) => setActiveSite(activeSite)}
             autoZoom={true}
             defaultZoom={8}
-          />
-        )}
+          >
+              <section className="section">
+                  <div className="container is-fluid">
+                      <div className="columns">
+                          <div className="column is-three-quarters"></div>
+                          <div className="column">
+                              <div className="tile box is-vertical" id="main-content">
+                                  <span className="icon"
+                                      style={{
+                                          position: 'absolute',
+                                          right: 15,
+                                          cursor: 'pointer',
+                                          color: '#363636'
+                                      }}
+                                      onClick={() => {
+                                        setActiveSite(undefined)
+                                      }}
+                                  >
+                                      <i className="far fa-times-circle"></i>
+                                  </span>
+                                  <ErrorBoundary>
+                                <DestinationCard 
+                                      country={country}
+                                      city={city}
+                                      site={activeSite} 
+                                      isLoggedIn={true} />
+                                    </ErrorBoundary>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+            </DiveMap>
+          }
       </div>
     </>
   );

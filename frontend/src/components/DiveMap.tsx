@@ -15,7 +15,8 @@ interface Props {
     activeSiteCity?: string,
     onGoogleApiLoaded?: ({ map , maps }: { map: any, maps: any }) => void
     defaultZoom?: number,
-    autoZoom?: boolean
+    autoZoom?: boolean,
+    children?: React.ReactNode
 }
 
 function DiveMap({ 
@@ -27,7 +28,8 @@ function DiveMap({
         activeSiteCity,
         onGoogleApiLoaded,
         defaultZoom,
-        autoZoom
+        autoZoom,
+        children
     } : Props ) {
 
     if (autoZoom === true && locations.length > 0) {
@@ -74,38 +76,7 @@ function DiveMap({
            :false}
             </div>
             <div id="content">
-            
-            {activeSite != null && activeSiteCountry != null && activeSiteCity != null &&
-            <section className="section">
-                <div className="container is-fluid">
-                    <div className="columns">
-                        <div className="column is-three-quarters"></div>
-                        <div className="column">
-                            <div className="tile box is-vertical" id="main-content">
-                                <span className="icon"
-                                    style={{
-                                        position: 'absolute',
-                                        right: 15,
-                                        cursor: 'pointer',
-                                        color: '#363636'
-                                    }}
-                                    onClick={() => {
-                                        if (setActiveLocation != null) setActiveLocation(undefined)
-                                    }}
-                                >
-                                    <i className="far fa-times-circle"></i>
-                                </span>
-                               <DestinationCard 
-                                    country={activeSiteCountry}
-                                    city={activeSiteCity}
-                                    site={activeSite} 
-                                    isLoggedIn={true} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            }
+                {children}
             </div>
         </div>
     );

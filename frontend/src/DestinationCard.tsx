@@ -25,7 +25,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
     }
 
     async componentDidUpdate(prevProps: any) {
-        if (this.props.site.id !== prevProps.site.id) {
+        if (this.props.site != null && prevProps.site != null && (this.props.site.id !== prevProps.site.id)) {
             this._textarea.value = ''
             // this.syncNote()
         }
