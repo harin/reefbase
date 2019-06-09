@@ -5,7 +5,6 @@ import { getDestination, IDiveSite, ICity } from "./api";
 import DiveMap from "./components/DiveMap";
 import ErrorBoundary from './components/ErrorBoundary';
 
-
 function Destination(props: any) {
   const [diveSites, setDiveSites] = useState<IDiveSite[]>([]);
   const [destination, setDestination] = useState<ICity | null>(null);
