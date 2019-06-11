@@ -36,19 +36,8 @@ const MapPage = function(props: any) {
     query.include_location = "true";
 
     const data = await getDiveSites(query);
-    // console.log('new dive sites', data)
-
-    // const center: IDiveSite = {
-    //     id: 1,
-    //     lat: searchCircle.lat,
-    //     lng: searchCircle.lng,
-    //     name: 'center',
-    //     destination: '',
-    //     country: ''
-    // }
-
+ 
     setDiveSites(data.results);
-    // setDiveSites([center])
   }
 
   useEffect(() => {
@@ -58,24 +47,6 @@ const MapPage = function(props: any) {
   }, []);
 
   return (
-    <>
-      <div className="container is-fluid">
-          <div className="columns">
-              <div className="column is-two-fifths"></div>
-              <div className="column is-one-fifths">
-                  <div className="tile box is-vertical" id="main-content">
-                  <button
-                      className="button"
-                      style={{zIndex:10, border: 'none', background: 'rgba(21,60,106,0.9)', color: 'white'}}
-                      onClick={() => updateDiveSites()}
-                  >
-                      Redo Search Current Area
-                  </button>
-                  </div>
-              </div>
-              <div className="column is-two-fifths"></div>
-          </div>
-      </div>
       <DiveMap
         locations={diveSites}
         activeSite={activeSite}
@@ -84,9 +55,9 @@ const MapPage = function(props: any) {
         activeSiteCity={""}
         setActiveLocation={(activeSite: any) => setActiveSite(activeSite)}
         onGoogleApiLoaded={onLoad}
+        onClickUpdate={() => updateDiveSites()}
         defaultZoom={8}
       />
-    </>
   );
 };
 

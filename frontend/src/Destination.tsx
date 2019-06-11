@@ -67,6 +67,10 @@ function Destination(props: any) {
       <div>
         {destination != null && diveSites != null && 
           <DiveMap
+            onClickUpdate={() => {
+              const search = props.location.search
+              props.history.push('/destinations/map' + search)
+            }}
             locations={diveSites}
             activeSite={activeSite}
             centerCoord={{ lat: destination.lat, lng: destination.lng }}
