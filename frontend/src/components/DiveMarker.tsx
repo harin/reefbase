@@ -6,6 +6,17 @@ import { IDiveSite } from '../api'
 const DiveFlag = ({ site, lat, lng, clickHandler = () => { } }: { site: IDiveSite, lat: number, lng: number, clickHandler?: (site: IDiveSite) => void }) => {
 
     return (
+        <div style={{
+            height: 5,
+            width: 5,
+            backgroundColor: 'red',
+            borderRadius: '50%',
+            display: 'inline-block'
+        }}>
+
+        </div>
+    )
+    return (
         <div className="tooltip"
             data-tooltip={site.name}     
         >
