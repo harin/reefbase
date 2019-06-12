@@ -21,6 +21,21 @@
   }
 }
 
+.is-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.5;
+  &:after {
+      @include loader;
+      position: absolute;
+      top: calc(50% - 2.5em);
+      left: calc(50% - 2.5em);
+      width: 5em;
+      height: 5em;
+      border-width: 0.25em;
+  }
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -121,3 +136,16 @@ body, html {
   height:100%;
 }
 
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-top-color: white;
+	border-bottom: 0;
+	margin-left: -20px;
+	margin-bottom: -20px;
+}

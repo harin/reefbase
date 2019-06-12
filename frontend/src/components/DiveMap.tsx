@@ -112,7 +112,7 @@ function DiveMap({
 
                     if (locations.length == 1) {
                         map.setCenter(locations[0])
-                        map.setZoom(10)
+                        map.setZoom(8)
                     } else {
                         locations.forEach(diveSite => {
                         bounds.extend({
@@ -121,6 +121,8 @@ function DiveMap({
                         });
                         });
                         map.fitBounds(bounds);
+                        const zoom = map.getZoom()
+                        if (zoom > 12) map.setZoom(8)
                     }
                   }
 
@@ -154,10 +156,10 @@ function DiveMap({
                     clickHandler={setActiveLocation}
                   />
                 ))}
+                  {children}
               </GoogleMapReact>
             )}
           </div>
-          <div id="content">{children}</div>
         </div>
       </>
     );

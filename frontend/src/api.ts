@@ -1,3 +1,5 @@
+import { Primitive } from "lodash";
+
 // import { number } from "prop-types";
 
 export interface IUser {
@@ -148,7 +150,11 @@ export async function getDiveSites(query?: any) {
   return loadJson("/api/divesites?" + queryObj.toString());
 }
 
-export async function getDiveLogs() {
+export async function getDiveSite(id: number | string): Promise<IDiveSite> {
+  return loadJson('/api/divesites/' + id)
+}
+
+export async function getDiveLogs(){
   return loadJson('/api/divelogs')
 }
 
