@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-
+from django.contrib.postgres.fields import JSONField
 # Create your models here.
 
 
@@ -53,6 +53,11 @@ class City(Location):
 class DiveSite(Location):
     zoom_level = models.IntegerField(default=11)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
+    max_temp = models.FloatField(null=True)
+    min_temp = models.FloatField(null=True)
+    max_temp_by_month = JSONField(null=True)
+    min_temp_by_month = JSONField(null=True)
+    meta = JSONField(null=True)
 
     def __str__(self):
         return f'{self.name} {self.id}'
