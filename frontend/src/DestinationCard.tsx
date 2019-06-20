@@ -1,12 +1,12 @@
 import React from 'react';
 import { IDiveSite, Note } from './api'
 import { AppContext } from './AppContext'
+import {
+    LineChart, Line, XAxis, YAxis
+  } from 'recharts';
 
 interface IDestinationCardProps {
     site: IDiveSite;
-    isLoggedIn: boolean;
-    country: string;
-    city: string;
 }
 
 class DestinationCard extends React.Component<IDestinationCardProps, any> {
@@ -43,6 +43,7 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
 
     render() {
         const {site} = this.props
+        console.log(site)
         if (site == null) {
             return (
                 <div>
@@ -79,11 +80,31 @@ class DestinationCard extends React.Component<IDestinationCardProps, any> {
             )
         }
 
+        const tempData: any[] = []
+        if (site.min_temp_by_month != null && site.max_temp_by_month != null) {
+            site.min_temp_by_month.forEach((minTemp, i) => {
+                // @ts-ignore
+                const maxTemp = site.max_temp_by_month[i]
+                tempData.push({ minTemp, maxTemp })
+            })
+        }
+
         return (
         <div>
             <h2 className="title is-two">{site.name}</h2>
             <h3 className="subtitle is-four">{site.city_name}, {site.country_name}</h3>
-            { textarea }
+            <LineChart
+                width={200}
+                height={100}
+                data={tempData}
+                margin={{ left: 0 }}
+            >
+                <Line type="monotone" dataKey="maxTemp" />
+                <Line type="monotone" dataKey="minTemp" />
+                <XAxis />
+                <YAxis />
+            </LineChart>
+            {/* { textarea } */}
         </div>
         )
     }

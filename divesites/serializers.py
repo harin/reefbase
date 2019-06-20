@@ -28,6 +28,10 @@ class DiveSiteSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     country_name = serializers.ReadOnlyField(required=False)
     city_name = serializers.ReadOnlyField(required=False)
+    meta = serializers.JSONField()
+    min_temp_by_month = serializers.JSONField()
+    max_temp_by_month = serializers.JSONField()
+    
     class Meta:
         model = DiveSite
         fields = '__all__'

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DiveMap from "./components/DiveMap";
+import DestinationCard from './DestinationCard';
 import distance from "./distance";
 import { getDiveSite, getDiveSites, IDiveSite } from "./api";
 
@@ -91,18 +92,19 @@ const MapPage = function(props: any) {
   }, []);
 
   return (
-      <DiveMap
-        locations={diveSites}
-        activeSite={activeSite}
-        centerCoord={{ lat: searchCircle.lat, lng: searchCircle.lng }}
-        activeSiteCountry={""}
-        activeSiteCity={""}
-        setActiveLocation={(activeSite: any) => setActiveSite(activeSite)}
-        onGoogleApiLoaded={onLoad}
-        onClickUpdate={() => updateDiveSites()}
-        defaultZoom={8}
-      >
-        { activeSite &&
+    <>
+    <DiveMap
+      locations={diveSites}
+      activeSite={activeSite}
+      centerCoord={{ lat: searchCircle.lat, lng: searchCircle.lng }}
+      activeSiteCountry={""}
+      activeSiteCity={""}
+      setActiveLocation={(activeSite: any) => setActiveSite(activeSite)}
+      onGoogleApiLoaded={onLoad}
+      onClickUpdate={() => updateDiveSites()}
+      defaultZoom={8}
+    >
+      {/* { activeSite &&
           //@ts-ignore
           <div
             className='speech-bubble'
@@ -124,8 +126,37 @@ const MapPage = function(props: any) {
           >
              <MapBubbleContent diveSite={activeSite} />
           </div>
-        }
-      </DiveMap>
+
+        } */}
+     
+    </DiveMap>
+     {activeSite != null && (
+      <section className="section" id="content">
+        <div className="container is-fluid">
+          <div className="columns">
+            <div className="column is-three-quarters" />
+            <div className="column">
+              <div className="tile box is-vertical" id="main-content">
+                <span
+                  className="icon"
+                  style={{
+                    position: "absolute",
+                    right: 15,
+                    cursor: "pointer",
+                    color: "#363636"
+                  }}
+                  onClick={() => setActiveSite(undefined)}
+                >
+                  <i className="far fa-times-circle" />
+                </span>
+                <DestinationCard site={activeSite} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+    </>
   );
 };
 

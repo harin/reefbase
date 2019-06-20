@@ -153,7 +153,10 @@ function DiveMap({
                     lat={site.lat}
                     lng={site.lng}
                     site={site}
-                    clickHandler={setActiveLocation}
+                    clickHandler={() => {
+                      if (setActiveLocation != null)
+                        setActiveLocation(site)
+                    }}
                   />
                 ))}
                   {children}

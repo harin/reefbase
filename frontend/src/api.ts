@@ -28,6 +28,10 @@ export interface IDiveSite extends ILocation {
   name: string;
   country_name?: string;
   city_name?: string;
+  min_temp?: number;
+  max_temp?: number;
+  min_temp_by_month?: number[];
+  max_temp_by_month?: number[];
 }
 
 export interface INote {
@@ -134,6 +138,7 @@ export async function getDestination(
     data.results = data.results.map((result: ICity) => {
       if (result.divesite_set == null) return result;
       result.divesite_set = result.divesite_set.map((datum: IDiveSite) => {
+        datum = diveSiteParser(datum)
         datum.country_name = country_name;
         datum.city_name = city_name;
         return datum;
@@ -145,13 +150,23 @@ export async function getDestination(
   return data;
 }
 
-export async function getDiveSites(query?: any) {
+function diveSiteParser(divesite: any) {
+  divesite.min_temp_by_month = JSON.parse(divesite.min_temp_by_month)
+  divesite.max_temp_by_month = JSON.parse(divesite.max_temp_by_month)
+  divesite.meta = JSON.parse(divesite.meta)
+  return divesite
+}
+
+export async function getDiveSites(query?: any): Promise<APIResults<IDiveSite>> {
   const queryObj = new URLSearchParams(query);
-  return loadJson("/api/divesites?" + queryObj.toString());
+  const results = await loadJson("/api/divesites?" + queryObj.toString());
+  results.results = results.results.map(diveSiteParser)
+  return results
 }
 
 export async function getDiveSite(id: number | string): Promise<IDiveSite> {
-  return loadJson('/api/divesites/' + id)
+  const diveSite = await loadJson('/api/divesites/' + id)
+  return diveSiteParser(diveSite)
 }
 
 export async function getDiveLogs(){
