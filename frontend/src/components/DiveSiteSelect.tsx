@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IDiveSite, APIResults } from '../api'
+import { IDiveSite, APIResults } from '../lib/api'
 
 const SEARCH_TIMEOUT_MS = 500
 

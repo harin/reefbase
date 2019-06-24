@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { auth } from './api.ts'
+import { auth } from './lib/api.ts'
 import { withRouter } from 'react-router-dom'
 import { AppContext } from './AppContext.tsx'
 

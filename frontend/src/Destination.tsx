@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import DestinationCard from "./DestinationCard";
-import { getDestination, IDiveSite, ICity } from "./api";
+import { getDestination, IDiveSite, ICity } from "./lib/api";
 import DiveMap from "./components/DiveMap";
 import ErrorBoundary from "./components/ErrorBoundary";
 

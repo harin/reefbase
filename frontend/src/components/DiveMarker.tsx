@@ -1,6 +1,6 @@
 import React from 'react';
 import diveflag from '../diverflag.png'
-import { IDiveSite } from '../api'
+import { IDiveSite } from '../lib/api'
 
 function calculateMarkerSize(zoom: any) {
     // return 10
@@ -11,33 +11,57 @@ function calculateMarkerSize(zoom: any) {
     return size
 }
 
-const DiveFlag = ({
-  site,
-  lat,
-  lng,
-  zoom,
-  clickHandler = () => {}
-}: {
+interface DiveFlagProps {
   site: IDiveSite;
   lat: number;
   lng: number;
   zoom?: any;
   clickHandler?: (site: IDiveSite) => void;
-}) => {
+  color?: string;
+  diameter?: number;
+  text?: string;
+}
+const DiveFlag = ({
+  site,
+  zoom,
+  color,
+  diameter,
+  text,
+  clickHandler = () => {}
+}: DiveFlagProps) => {
+  if (color == null) {
+    color = 'red'
+  }
+
+  if (diameter == null) {
+    diameter = calculateMarkerSize(zoom)
+  }
+
   return (
     <div className="tooltip" data-tooltip={site.name}
       style={{
-        height: calculateMarkerSize(zoom),
-        width: calculateMarkerSize(zoom),
-        backgroundColor: "red",
+        height: diameter,
+        width: diameter,
+        backgroundColor: color,
         borderRadius: "50%",
-        display: "inline-block",
+        display: "flex",
+        flexDirection: 'column',
+        alignContent: 'center',
         cursor: 'pointer',
         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
         border: '1px solid white'
       }}
       onClick={() => clickHandler(site)}
-    />
+    >
+      <span
+        style={{
+          color: 'white', 
+          textAlign: 'center',
+          width: '100%',
+          flexGrow: 1
+        }}
+      >{text}</span>
+    </div>
   );
   return (
     <div className="tooltip" data-tooltip={site.name}>

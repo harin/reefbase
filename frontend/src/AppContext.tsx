@@ -1,5 +1,5 @@
 import React from 'react';
-import { IUser } from './api'
+import { IUser } from './lib/api'
 
 export const DEFAULT_STATE = {
     user: undefined,

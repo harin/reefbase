@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DiveMap from "./components/DiveMap";
 import DestinationCard from './DestinationCard';
 import distance from "./distance";
-import { getDiveSite, getDiveSites, IDiveSite } from "./api";
+import { getDiveSite, getDiveSites, IDiveSite } from "./lib/api";
 
 
 interface BubbleProps {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getCountries, getCities, ICity, loadJson } from "./api";
+import { getCountries, getCities, ICity, loadJson } from "./lib/api";
 import DiveMap from "./components/DiveMap";
 
 const Level = (props: any) => <div className="level">{props.children}</div>;

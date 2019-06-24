@@ -15,7 +15,7 @@ import MapPage from "./MapPage";
 import DiveLogsPage from './DiveLogsPage'
 import ErrorView from './components/ErrorView'
 import { AppContext, DEFAULT_STATE } from "./AppContext";
-import { IUser } from "./api";
+import { IUser } from "./lib/api";
 
 function DestinationPage(props: any) {
   return <Destination {...props} />;

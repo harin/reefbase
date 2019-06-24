@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { sortBy } from "lodash-es";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import DiveSiteSelect from './DiveSiteSelect'
-import { IDiveSite, APIResults, createDiveLog } from '../api'
+import { IDiveSite, APIResults, createDiveLog } from '../lib/api'
 
 interface Props {
   getDiveSites: (q?: any) => Promise<APIResults<IDiveSite>>;

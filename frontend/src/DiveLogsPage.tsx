@@ -5,7 +5,7 @@ import CardRight from './components/CardRight'
 import DiveMap from './components/DiveMap'
 import { meanBy } from 'lodash-es'
 
-import { getDiveSites, getDiveLogs} from './api'
+import { getDiveSites, getDiveLogs} from './lib/api'
 
 export const DiveLogsPage = () => {
     const [diveLogs, setDiveLogs ] = useState([] as any[])
