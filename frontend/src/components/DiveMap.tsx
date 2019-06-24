@@ -8,14 +8,7 @@ import mapStyle from './google_map_style.json'
 import * as H from 'history'
 import * as querystring from 'query-string'
 import * as turf from '@turf/turf'
-
-function calculateMeterPerPixel(lat:number, zoom:number) {
-  console.log(lat, zoom)
-  console.log(Math.cos(lat * Math.PI / 180))
-  console.log(Math.pow(2,zoom))
-  const meterPerPixel = 156543.03392 * Math.cos(lat * Math.PI / 180) / Math.pow(2, zoom)
-  return meterPerPixel
-}
+import { calculateMeterPerPixel } from '../lib/utils'
 
 interface Props {
     locations: ILocation[], 
@@ -34,7 +27,8 @@ interface Props {
 
 }
 
-const googleMapStyle = mapStyle
+const googleMapStyle = mapStyle;
+const NO_CLUSTER_ZOOM_THRESHOLD = 10;
 
 var timeout: any;
 function DiveMap({ 
@@ -76,16 +70,27 @@ function DiveMap({
       return turf.point([loc.lat, loc.lng], loc)
     })
     
-
+    // default to noise before clustering
+    let collection = { 
+      features: locations.map(loc => {
+        const properties = Object.assign({}, loc, { dbscan: 'noise' })
+        return {
+          properties
+        }
+      })
+    }
+    if (dbScanRadiusKM > 0) {
+      //@ts-ignore
+      collection = turf.clustersDbscan(
+        turf.featureCollection(features),
+        dbScanRadiusKM 
+      )
+    }
     // @ts-ignore
-    const collection = turf.clustersDbscan(
-      turf.featureCollection(features),
-      dbScanRadiusKM 
-    )
     const clusters = groupBy(collection.features, 'properties.cluster')
     console.log({ clusters })
     const noises = collection.features.filter((feature: any) => 
-      feature.properties.dbscan == 'noise'
+      feature.properties.cluster == null
     )
     return (
       <>
@@ -171,8 +176,10 @@ function DiveMap({
 
                       const meterPerPixel = calculateMeterPerPixel(lat(), zoom)
                       const clusterRadiusPixel = 10
-                      const clusterRadiusKM = meterPerPixel * clusterRadiusPixel / 1000
-                      console.log({ clusterRadiusKM })
+                      let clusterRadiusKM = meterPerPixel * clusterRadiusPixel / 1000
+                      if (zoom > NO_CLUSTER_ZOOM_THRESHOLD) {
+                        clusterRadiusKM = 0
+                      }
                       updateDbScanRadius(clusterRadiusKM)
                     }, 500);
                   });
@@ -184,9 +191,9 @@ function DiveMap({
                   .map((key: string) => {
                     const cluster: any[] = clusters[key]
                     const collection = turf.featureCollection(cluster)
-                    const bbox = turf.bbox(collection)
-                    const bboxPolygon = turf.bboxPolygon(bbox)
-                    console.log({ bbox, bboxPolygon})
+                    // const bbox = turf.bbox(collection)
+                    // const bboxPolygon = turf.bboxPolygon(bbox)
+                    // console.log({ bbox, bboxPolygon })
 
                     //@ts-ignore
                     const cg = turf.centerOfMass(collection)
@@ -219,9 +226,14 @@ function DiveMap({
                 {noises.map((point:any) => {
 
                   const site = point.properties
+                  let text = ''
                   let color = 'red'
-                  if (site.dbscan == 'noise') {
+                  if (site.dbscan == 'noise' || site.dbscan == 'edge') {
                     color='green'
+                  }
+
+                  if (zoom != null && zoom > NO_CLUSTER_ZOOM_THRESHOLD) {
+                    text = site.name
                   }
 
                   return <DiveMarker
@@ -235,7 +247,7 @@ function DiveMap({
                       if (setActiveLocation != null)
                         setActiveLocation(site)
                     }}
-                  />
+                  >{text}</DiveMarker>
                 })}
                   {children}
               </GoogleMapReact>

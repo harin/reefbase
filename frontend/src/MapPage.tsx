@@ -3,57 +3,66 @@ import DiveMap from "./components/DiveMap";
 import DestinationCard from './DestinationCard';
 import distance from "./distance";
 import { getDiveSite, getDiveSites, IDiveSite } from "./lib/api";
+import * as querystring from 'query-string'
+import { withRouter } from 'react-router-dom'
+import { calculateMeterPerPixel } from './lib/utils'
 
 
-interface BubbleProps {
-  diveSite: IDiveSite;
-}
+// interface BubbleProps {
+//   diveSite: IDiveSite;
+// }
 
-const MapBubbleContent = (props: BubbleProps) => {
-  const { diveSite } = props
+// const MapBubbleContent = (props: BubbleProps) => {
+//   const { diveSite } = props
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [fullSiteInfo, setFullSiteInfo] = useState({} as IDiveSite)
+//   const [isLoading, setIsLoading] = useState(false)
+//   const [fullSiteInfo, setFullSiteInfo] = useState({} as IDiveSite)
 
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true)
-      const fullSite: IDiveSite = await getDiveSite(diveSite.id)
-      setIsLoading(false)
-      setFullSiteInfo(fullSite)
-    })()
-  }, [diveSite])  
+//   useEffect(() => {
+//     (async () => {
+//       setIsLoading(true)
+//       const fullSite: IDiveSite = await getDiveSite(diveSite.id)
+//       setIsLoading(false)
+//       setFullSiteInfo(fullSite)
+//     })()
+//   }, [diveSite])  
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <h3 
-        style={{ flex: 0 }}
-        className="title is-4">{diveSite.name}</h3>
-      <div className={isLoading ? 'is-loading' : ''}
-        style={{
-          height: '100%',
-          flex: '1 0 auto'
-        }} 
-      >
+//   return (
+//     <div
+//       style={{
+//         display: 'flex',
+//         flexDirection: 'column',
+//       }}
+//     >
+//       <h3 
+//         style={{ flex: 0 }}
+//         className="title is-4">{diveSite.name}</h3>
+//       <div className={isLoading ? 'is-loading' : ''}
+//         style={{
+//           height: '100%',
+//           flex: '1 0 auto'
+//         }} 
+//       >
 
-      </div>
-    </div>
-  )
-}
+//       </div>
+//     </div>
+//   )
+// }
 
 
 
 const MapPage = function(props: any) {
+  const { location } = props;
+  const { lat, lng, zoom } = querystring.parse(location.search)
+
+  const effectiveLat = Number(lat) || 26.5293775 //florida
+  const effectiveZoom = Number(zoom) || 10
+
   const [activeSite, setActiveSite] = useState(null as any)
   const [searchCircle, setSearchCircle] = useState({
-    lat: 26.5293775, //florida
-    lng: -82.8939276,
-    radius: 240
+    lat: effectiveLat,
+    lng: Number(lng || -82.8939276),
+    radius: calculateMeterPerPixel(effectiveLat, effectiveZoom)
   });
   const [diveSites, setDiveSites] = useState([] as IDiveSite[]);
 
@@ -160,4 +169,4 @@ const MapPage = function(props: any) {
   );
 };
 
-export default MapPage;
+export default withRouter(MapPage);

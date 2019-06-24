@@ -1,5 +1,4 @@
-import React from 'react';
-import diveflag from '../diverflag.png'
+import React, { ReactChild } from 'react';
 import { IDiveSite } from '../lib/api'
 
 function calculateMarkerSize(zoom: any) {
@@ -20,6 +19,7 @@ interface DiveFlagProps {
   color?: string;
   diameter?: number;
   text?: string;
+  children?: ReactChild
 }
 const DiveFlag = ({
   site,
@@ -27,6 +27,7 @@ const DiveFlag = ({
   color,
   diameter,
   text,
+  children,
   clickHandler = () => {}
 }: DiveFlagProps) => {
   if (color == null) {
@@ -61,19 +62,14 @@ const DiveFlag = ({
           flexGrow: 1
         }}
       >{text}</span>
-    </div>
-  );
-  return (
-    <div className="tooltip" data-tooltip={site.name}>
-      <img
-        onClick={() => clickHandler(site)}
-        src={diveflag}
-        alt="Diver Down Flag"
+      <span
         style={{
-          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-          cursor: "pointer"
+          position: 'relative',
+          textShadow: '-1px 0 white, 0 1px white, 1px 0 white, 0 -1px white',
+          fontWeight: 500,
+          left: diameter + 5
         }}
-      />
+      >{children}</span>
     </div>
   );
 };
