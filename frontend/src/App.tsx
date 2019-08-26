@@ -82,7 +82,7 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              render={() => <Redirect to="/destinations" />}
+              render={() => <Redirect to="/destinations/map" />}
             />
             <Route path="/about/" component={About} />
             <Route
@@ -92,7 +92,7 @@ class App extends React.Component {
             />
             <Switch>
               <Route path="/destinations/map" exact component={MapPage} />
-              <Route
+              {/* <Route
                 path="/destinations/:country"
                 exact
                 component={DestinationListPage}
@@ -101,7 +101,7 @@ class App extends React.Component {
                 path="/destinations/:country/:city"
                 exact
                 component={DestinationPage}
-              />
+              /> */}
               <Route
                 path='/divelogs'
                 component={DiveLogsPage}
