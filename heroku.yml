@@ -1,0 +1,9 @@
+build:
+  config:
+    DISABLE_COLLECTSTATIC: '1'
+  packages:
+    - gdal-bin
+  languages:
+    - python
+run:
+  web: gunicorn reefbasedjango.wsgi
