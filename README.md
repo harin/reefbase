@@ -1,7 +1,7 @@
 
 ## What is `Reefbase`
 
-**Reefbase** is a application for scuba divers to explore possible dive sites around the world. It utilizes data from [divesites.com](http://divesites.com) and water temperature data from [NOAA's World Ocean Atlas](https://www.nodc.noaa.gov/OC5/SELECT/woaselect/woaselect.html) dataset to display temperature and dive site around the world.
+**Reefbase** is an application for scuba divers to explore possible dive sites around the world. It utilizes data from [divesites.com](http://divesites.com) and water temperature data from [NOAA's World Ocean Atlas](https://www.nodc.noaa.gov/OC5/SELECT/woaselect/woaselect.html) dataset to display temperature and dive site around the world.
 
 ## Architecture
 The `reefbase` application is seperated into 3 components, the database, the REST API and the client side application.
