@@ -12,7 +12,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'reefbase.herokuapp.com']
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-
+# Setting for AWS RDS
 # root_ca_path = BASE_DIR/'amazon-rds-ca-cert.pem'
 # DATABASES = {
 #     'default': {
