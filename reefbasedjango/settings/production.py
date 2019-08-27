@@ -1,4 +1,6 @@
 from reefbasedjango.settings.common import *
+import dj_database_url
+
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
@@ -11,20 +13,27 @@ ALLOWED_HOSTS = ['127.0.0.1', 'reefbase.herokuapp.com']
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 
-root_ca_path = BASE_DIR/'amazon-rds-ca-cert.pem'
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': os.environ['DATABASE_NAME'],
-        'HOST': os.environ['DATABASE_HOST'] ,
-        'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'OPTIONS': {
-            'sslmode': 'verify-full',
-            'sslrootcert': root_ca_path
-        }
-    }
-}
+# root_ca_path = BASE_DIR/'amazon-rds-ca-cert.pem'
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#         'NAME': os.environ['DATABASE_NAME'],
+#         'HOST': os.environ['DATABASE_HOST'] ,
+#         'USER': os.environ['DATABASE_USER'],
+#         'PASSWORD': os.environ['DATABASE_PASSWORD'],
+#         'OPTIONS': {
+#             'sslmode': 'verify-full',
+#             'sslrootcert': root_ca_path
+#         }
+#     }
+# }
+
+
+DATABASES = {}
+
+url_string = os.environ.get('HEROKU_POSTGRESQL_GOLD_URL')
+DATABASES['default'] = dj_database_url.parse(url_string, conn_max_age=600, ssl_require=True)
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis' 
 
 # LOGGING = {
 # 	'version': 1,

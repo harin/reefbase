@@ -22,3 +22,9 @@ DATABASES = {
         'PASSWORD': 'password'
     }
 }
+
+url_string = os.environ.get('DATABASE_URL')
+if url_string:
+    import dj_database_url
+    DATABASES['default'] = dj_database_url.parse(url_string, conn_max_age=600, ssl_require=True)
+    DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis' 
