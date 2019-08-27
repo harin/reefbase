@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import Destination from "./Destination";
 import DestinationList from "./DestinationList";
-import About from "./About";
+import About from "./About.jsx";
 import MapPage from "./MapPage";
 import DiveLogsPage from './DiveLogsPage'
 import ErrorView from './components/ErrorView'
