@@ -62,7 +62,7 @@
   },
   "proxy": "http://localhost:8000",
   "devDependencies": {
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "@storybook/react": "^5.0.11",
     "@storybook/addon-actions": "^5.0.11",
     "@storybook/addon-links": "^5.0.11",
